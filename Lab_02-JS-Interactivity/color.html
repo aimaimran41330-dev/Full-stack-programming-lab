@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Color Generator</title>
+</head>
+<body>
+
+<h2>Color Box Generator</h2>
+
+<input type="text" id="color">
+<button onclick="addColor()">Add</button>
+<button onclick="clearColors()">Clear</button>
+
+<div id="boxes"></div>
+
+<script>
+function addColor(){
+let color = document.getElementById("color").value;
+let box = document.createElement("div");
+box.style.width="100px";
+box.style.height="100px";
+box.style.background=color;
+box.style.margin="5px";
+document.getElementById("boxes").appendChild(box);
+}
+
+function clearColors(){
+document.getElementById("boxes").innerHTML="";
+}
+</script>
+
+</body>
+</html>
