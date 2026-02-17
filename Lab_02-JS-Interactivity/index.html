@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dynamic Quiz</title>
+<style>
+body{font-family:Arial; text-align:center;}
+.result{font-size:20px; margin-top:20px;}
+</style>
+</head>
+<body>
+
+<h2>Simple Quiz</h2>
+
+<p>1. What is 2 + 2?</p>
+<input type="text" id="q1">
+
+<p>2. What is capital of Pakistan?</p>
+<input type="text" id="q2">
+
+<p>3. JavaScript is (language/tool)?</p>
+<input type="text" id="q3">
+
+<br><br>
+<button onclick="checkQuiz()">Submit</button>
+<button onclick="resetQuiz()">Reset</button>
+
+<div class="result" id="result"></div>
+
+<script>
+function checkQuiz(){
+let score = 0;
+
+let q1 = document.getElementById("q1").value;
+let q2 = document.getElementById("q2").value;
+let q3 = document.getElementById("q3").value;
+
+if(q1 == "4"){ score++; }
+if(q2.toLowerCase() == "islamabad"){ score++; }
+if(q3.toLowerCase() == "language"){ score++; }
+
+document.getElementById("result").innerText = "Your Score: " + score;
+
+if(score == 3){
+document.getElementById("result").innerText += " Excellent!";
+}
+else{
+document.getElementById("result").innerText += " Try Again!";
+}
+}
+
+function resetQuiz(){
+document.getElementById("q1").value="";
+document.getElementById("q2").value="";
+document.getElementById("q3").value="";
+document.getElementById("result").innerText="";
+}
+</script>
+
+</body>
+</html>
