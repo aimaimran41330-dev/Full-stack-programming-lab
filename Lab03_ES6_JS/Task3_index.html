@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 3 - Async Data Loader</title>
+    <link rel="stylesheet" href="Task3_style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">⚡ Async Data Loader</h1>
+            <p class="subtitle">Promises with .then() & .catch()</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Controls -->
+            <div class="controls-section slide-in">
+                <h2>Server Controls</h2>
+                <div class="control-buttons">
+                    <button id="fetchSuccess" class="btn-success pulse">✅ Fetch Users (Success)</button>
+                    <button id="fetchFail" class="btn-danger pulse">❌ Fetch Users (Fail)</button>
+                    <button id="resetData" class="btn-secondary">🔄 Reset</button>
+                </div>
+                <div class="loading-section" id="loadingSection">
+                    <div class="loading-spinner" id="loadingSpinner"></div>
+                    <p id="loadingText">Ready to fetch data...</p>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div class="results-section">
+                <div class="results-header">
+                    <h2>Users Data <span id="usersCount">0</span></h2>
+                    <div class="status" id="statusIndicator">🟢 Ready</div>
+                </div>
+                
+                <div id="usersList" class="users-grid"></div>
+                
+                <div class="promise-info">
+                    <h3>🔍 Promise Chain Log</h3>
+                    <div id="promiseLog" class="log-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="Task3_script.js"></script>
+</body>
+</html>
