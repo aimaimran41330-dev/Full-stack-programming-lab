@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 4 - Unique Course Registration</title>
+    <link rel="stylesheet" href="Task4_style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">📚 Course Registration</h1>
+            <p class="subtitle">Set - Prevent Duplicates</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Add Courses -->
+            <div class="add-courses-section slide-in">
+                <h2>Add Courses</h2>
+                <form id="courseForm" class="form">
+                    <div class="input-group">
+                        <input type="text" id="courseName" placeholder="Course Name (e.g., CS-401)" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="courseTitle" placeholder="Course Title (e.g., Web Development)" required>
+                    </div>
+                    <button type="submit" class="btn-primary pulse">➕ Register Course</button>
+                </form>
+                
+                <div class="quick-add">
+                    <h3>Quick Add Courses</h3>
+                    <div class="quick-buttons">
+                        <button class="quick-btn" data-course="CS-401,Web Development">CS-401</button>
+                        <button class="quick-btn" data-course="CS-402,Data Structures">CS-402</button>
+                        <button class="quick-btn" data-course="CS-403,Algorithms">CS-403</button>
+                        <button class="quick-btn" data-course="CS-401,Web Development">Duplicate Test</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Courses Display -->
+            <div class="courses-section">
+                <div class="courses-header">
+                    <h2>Registered Courses <span id="totalCourses">0</span></h2>
+                    <div class="stats">
+                        <span class="stat unique">🎯 Unique: <span id="uniqueCount">0</span></span>
+                        <button id="clearCourses" class="btn-secondary">🗑️ Clear All</button>
+                    </div>
+                </div>
+                
+                <div id="coursesList" class="courses-grid"></div>
+                
+                <div class="set-info">
+                    <h3>🔍 Set Operations Log</h3>
+                    <div id="setLog" class="log-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="Task4_script.js"></script>
+</body>
+</html>
