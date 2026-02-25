@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Student Management System</h1>
+
+    <div class="form-section">
+        <h2>Add Student</h2>
+        <input type="number" id="id" placeholder="Student ID">
+        <input type="text" id="name" placeholder="Student Name">
+        <input type="number" id="semester" placeholder="Semester">
+        <input type="text" id="courses" placeholder="Courses (comma separated)">
+        <button onclick="addStudent()">Add Student</button>
+    </div>
+
+    <div class="display-section">
+        <h2>Student List</h2>
+        <div id="studentList"></div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
