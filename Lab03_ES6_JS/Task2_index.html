@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 2 - Online Shopping Cart</title>
+    <link rel="stylesheet" href="Task2_style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">🛒 Shopping Cart System</h1>
+            <p class="subtitle">Rest, Spread & Destructuring Operators</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Products Section -->
+            <div class="products-section slide-in">
+                <h2>Add Products to Cart</h2>
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will be dynamically loaded -->
+                </div>
+            </div>
+
+            <!-- Cart Section -->
+            <div class="cart-section">
+                <div class="cart-header">
+                    <h2>Shopping Cart <span id="cartTotalItems">0</span></h2>
+                    <button id="clearCart" class="btn-secondary">🗑️ Clear Cart</button>
+                </div>
+                
+                <div class="cart-display">
+                    <div id="cartInfo" class="cart-info"></div>
+                    <div id="cartItems" class="cart-items"></div>
+                </div>
+                
+                <div class="cart-actions">
+                    <button id="cloneCart" class="btn-primary">🔄 Clone Cart</button>
+                    <button id="showDestructured" class="btn-success">📦 Show Destructured</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="Task2_script.js"></script>
+</body>
+</html>
