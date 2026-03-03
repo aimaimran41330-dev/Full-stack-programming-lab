@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Task 6 - API Data Fetcher</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0a0a0a;
+      color: #e5e5e5;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    .container { max-width: 680px; margin: 0 auto; }
+    h1 { font-size: 1.8rem; color: #a78bfa; margin-bottom: 6px; }
+    p.subtitle { color: #666; font-size: 0.88rem; margin-bottom: 28px; }
+    #postList { list-style: none; }
+    .post-card {
+      background: #111;
+      border: 1px solid #222;
+      border-left: 3px solid #a78bfa;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 12px;
+    }
+    .post-card h3 {
+      font-size: 0.95rem;
+      color: #a78bfa;
+      text-transform: capitalize;
+      margin-bottom: 6px;
+    }
+    .post-card p { color: #aaa; font-size: 0.88rem; line-height: 1.6; }
+    .post-id { font-size: 0.75rem; color: #555; margin-bottom: 4px; }
+    .btn-row { display: flex; gap: 12px; margin-bottom: 28px; }
+    .load-btn {
+      padding: 12px 28px;
+      background: #a78bfa;
+      color: #0a0a0a;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .load-btn:hover { background: #7c3aed; color: white; }
+    .load-btn:disabled { background: #333; color: #555; cursor: not-allowed; }
+    #status { color: #666; font-size: 0.88rem; align-self: center; }
+    #loader { color: #a78bfa; text-align: center; padding: 16px; display: none; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🌐 API Data Fetcher</h1>
+  <p class="subtitle">Task 6 — Ajax, DOM Manipulation, Event Handling</p>
+
+  <div class="btn-row">
+    <button class="load-btn" id="loadBtn">Load Posts</button>
+    <button class="load-btn" id="moreBtn" disabled>Load More</button>
+    <span id="status">No posts loaded</span>
+  </div>
+
+  <div id="loader">⏳ Loading...</div>
+  <ul id="postList"></ul>
+</div>
+
+<script>
+$(document).ready(function () {
+  var page = 1;
+  var perPage = 5;
+  var totalLoaded = 0;
+
+  function loadPosts() {
+    var start = (page - 1) * perPage + 1;
+    $("#loader").fadeIn(200);
+    $("#loadBtn, #moreBtn").prop("disabled", true);
+
+    $.get("https://jsonplaceholder.typicode.com/posts", function (data) {
+      var posts = data.slice(start - 1, start - 1 + perPage);
+      posts.forEach(function (post) {
+        var card = $("<li></li>").addClass("post-card").hide();
+        card.html(
+          '<div class="post-id">Post #' + post.id + '</div>' +
+          '<h3>' + post.title + '</h3>' +
+          '<p>' + post.body + '</p>'
+        );
+        $("#postList").append(card);
+        card.fadeIn(300);
+      });
+
+      totalLoaded += posts.length;
+      page++;
+      $("#status").text(totalLoaded + " posts loaded");
+      $("#loader").fadeOut(200);
+      $("#loadBtn").prop("disabled", true).text("Loaded ✓");
+      if (totalLoaded < 100) {
+        $("#moreBtn").prop("disabled", false);
+      } else {
+        $("#moreBtn").prop("disabled", true).text("All posts loaded");
+      }
+    });
+  }
+
+  $("#loadBtn").on("click", function () {
+    page = 1;
+    totalLoaded = 0;
+    $("#postList").empty();
+    loadPosts();
+  });
+
+  $("#moreBtn").on("click", function () {
+    loadPosts();
+  });
+});
+</script>
+</body>
+</html>

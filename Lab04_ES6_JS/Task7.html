@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Task 7 - Drag & Drop Sortable List</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0fdf4;
+      color: #14532d;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 20px;
+    }
+    .container {
+      background: white;
+      border-radius: 18px;
+      padding: 40px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+    }
+    h1 { font-size: 1.7rem; color: #16a34a; margin-bottom: 6px; }
+    p.subtitle { color: #86efac; font-size: 0.88rem; margin-bottom: 28px; }
+    #sortList { list-style: none; }
+    #sortList li {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      background: #f0fdf4;
+      border: 1.5px solid #bbf7d0;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      cursor: grab;
+      font-weight: 500;
+      font-size: 0.97rem;
+      color: #14532d;
+      transition: background 0.2s, border 0.2s, box-shadow 0.2s;
+      user-select: none;
+    }
+    #sortList li:hover {
+      background: #dcfce7;
+      border-color: #4ade80;
+    }
+    #sortList li.ui-sortable-helper {
+      background: #16a34a;
+      color: white;
+      border-color: #16a34a;
+      box-shadow: 0 8px 24px rgba(22,163,74,0.25);
+      cursor: grabbing;
+    }
+    #sortList li.ui-sortable-placeholder {
+      background: #dcfce7;
+      border: 2px dashed #4ade80;
+      visibility: visible !important;
+    }
+    .drag-handle { color: #86efac; font-size: 1.2rem; }
+    .item-num {
+      background: #16a34a;
+      color: white;
+      border-radius: 50%;
+      width: 26px; height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    #orderDisplay {
+      margin-top: 20px;
+      padding: 14px 18px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      color: #166534;
+    }
+    #orderDisplay strong { color: #16a34a; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>↕️ Drag & Drop List</h1>
+  <p class="subtitle">Task 7 — DOM Manipulation, Event Handling, CSS Manipulation</p>
+
+  <ul id="sortList">
+    <li data-id="1"><span class="drag-handle">⠿</span><span class="item-num">1</span> Learn HTML & CSS</li>
+    <li data-id="2"><span class="drag-handle">⠿</span><span class="item-num">2</span> Master JavaScript</li>
+    <li data-id="3"><span class="drag-handle">⠿</span><span class="item-num">3</span> Practice jQuery</li>
+    <li data-id="4"><span class="drag-handle">⠿</span><span class="item-num">4</span> Build Projects</li>
+    <li data-id="5"><span class="drag-handle">⠿</span><span class="item-num">5</span> Learn React.js</li>
+    <li data-id="6"><span class="drag-handle">⠿</span><span class="item-num">6</span> Deploy to GitHub</li>
+  </ul>
+
+  <div id="orderDisplay"><strong>Current Order:</strong> 1, 2, 3, 4, 5, 6</div>
+</div>
+
+<script>
+$(document).ready(function () {
+
+  function updateNumbers() {
+    $("#sortList li").each(function (i) {
+      $(this).find(".item-num").text(i + 1);
+    });
+    var order = [];
+    $("#sortList li").each(function () {
+      order.push($(this).data("id"));
+    });
+    $("#orderDisplay").html("<strong>Current Order:</strong> " + order.join(", "));
+  }
+
+  $("#sortList").sortable({
+    placeholder: "ui-sortable-placeholder",
+    axis: "y",
+    update: function () {
+      updateNumbers();
+    }
+  });
+
+  $("#sortList").disableSelection();
+});
+</script>
+</body>
+</html>

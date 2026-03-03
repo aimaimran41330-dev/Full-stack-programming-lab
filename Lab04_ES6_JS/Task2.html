@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Task 2 - Animated Image Gallery</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #111827;
+      color: #f9fafb;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    .container {
+      background: #1f2937;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 620px;
+      width: 100%;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+      text-align: center;
+    }
+    h1 { font-size: 1.8rem; color: #f59e0b; margin-bottom: 6px; }
+    p.subtitle { color: #9ca3af; font-size: 0.88rem; margin-bottom: 28px; }
+    .gallery-box {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #374151;
+      margin-bottom: 16px;
+    }
+    .gallery-box img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+      border-radius: 14px;
+    }
+    .gallery-box img.active { display: block; }
+    #caption {
+      font-size: 1.05rem;
+      color: #fbbf24;
+      font-weight: 600;
+      margin-bottom: 20px;
+      min-height: 28px;
+    }
+    .counter {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+    .btn-row { display: flex; justify-content: center; gap: 16px; }
+    .nav-btn {
+      padding: 12px 32px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .nav-btn:active { transform: scale(0.97); }
+    #prevBtn { background: #374151; color: #f9fafb; }
+    #prevBtn:hover { background: #4b5563; }
+    #nextBtn { background: #f59e0b; color: #111827; }
+    #nextBtn:hover { background: #d97706; }
+    .dots { display: flex; justify-content: center; gap: 8px; margin-top: 18px; }
+    .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #374151;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .dot.active { background: #f59e0b; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🖼️ Animated Image Gallery</h1>
+  <p class="subtitle">Task 2 — Effects & Animations, DOM Manipulation, Chaining</p>
+
+  <div class="gallery-box" id="galleryBox">
+    <img src="https://picsum.photos/seed/city/600/300" class="active" alt="City" />
+    <img src="https://picsum.photos/seed/nature/600/300" alt="Nature" />
+    <img src="https://picsum.photos/seed/ocean/600/300" alt="Ocean" />
+    <img src="https://picsum.photos/seed/mountain/600/300" alt="Mountain" />
+    <img src="https://picsum.photos/seed/forest/600/300" alt="Forest" />
+  </div>
+
+  <div id="caption">City Lights at Night</div>
+  <div class="counter" id="counter">1 / 5</div>
+
+  <div class="btn-row">
+    <button class="nav-btn" id="prevBtn">◀ Prev</button>
+    <button class="nav-btn" id="nextBtn">Next ▶</button>
+  </div>
+
+  <div class="dots" id="dots"></div>
+</div>
+
+<script>
+$(document).ready(function () {
+  var captions = [
+    "City Lights at Night",
+    "Peaceful Nature Walk",
+    "Ocean Waves at Sunset",
+    "Majestic Mountain View",
+    "Deep Green Forest"
+  ];
+
+  var images = $("#galleryBox img");
+  var current = 0;
+  var total = images.length;
+
+  // Build dots
+  for (var i = 0; i < total; i++) {
+    var dot = $("<div></div>").addClass("dot" + (i === 0 ? " active" : ""));
+    dot.data("index", i);
+    $("#dots").append(dot);
+  }
+
+  function goTo(index) {
+    var $current = $(images[current]);
+    current = (index + total) % total;
+    var $next = $(images[current]);
+
+    $current.fadeOut(400);
+    $next.fadeIn(400);
+
+    $("#caption").fadeOut(200, function () {
+      $(this).text(captions[current]).fadeIn(300);
+    });
+
+    $("#counter").text((current + 1) + " / " + total);
+
+    $(".dot").removeClass("active");
+    $($(".dot")[current]).addClass("active");
+  }
+
+  $("#nextBtn").on("click", function () { goTo(current + 1); });
+  $("#prevBtn").on("click", function () { goTo(current - 1); });
+
+  $(document).on("click", ".dot", function () {
+    goTo($(this).data("index"));
+  });
+});
+</script>
+</body>
+</html>
