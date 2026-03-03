@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Task 5 - Chained Style Editor</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #1a1a2e;
+      color: #eee;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    .container {
+      background: #16213e;
+      border-radius: 18px;
+      padding: 40px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    }
+    h1 { font-size: 1.7rem; color: #e94560; margin-bottom: 6px; }
+    p.subtitle { color: #888; font-size: 0.88rem; margin-bottom: 30px; }
+    #textBlock {
+      background: #0f3460;
+      border-radius: 12px;
+      padding: 24px;
+      font-size: 1.2rem;
+      line-height: 1.7;
+      margin-bottom: 28px;
+      transition: all 0.3s;
+    }
+    .btn-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .style-btn {
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      background: #0f3460;
+      color: #eee;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .style-btn:hover { background: #e94560; transform: scale(1.03); }
+    .style-btn:active { transform: scale(0.97); }
+    #resetBtn {
+      margin-top: 14px;
+      width: 100%;
+      padding: 12px;
+      background: #444;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #resetBtn:hover { background: #666; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🎨 Chained Style Editor</h1>
+  <p class="subtitle">Task 5 — CSS Manipulation, Chaining, Event Handling</p>
+
+  <div id="textBlock">
+    This is your editable text block. Click the buttons below to apply multiple styles using jQuery chaining!
+  </div>
+
+  <div class="btn-grid">
+    <button class="style-btn" id="bigFont">🔠 Big Font</button>
+    <button class="style-btn" id="smallFont">🔡 Small Font</button>
+    <button class="style-btn" id="colorRed">🔴 Red Text</button>
+    <button class="style-btn" id="colorGreen">🟢 Green Text</button>
+    <button class="style-btn" id="bgYellow">💛 Yellow BG</button>
+    <button class="style-btn" id="bgDark">🌑 Dark BG</button>
+    <button class="style-btn" id="toggleBold">B Bold</button>
+    <button class="style-btn" id="toggleItalic"><i>I</i> Italic</button>
+    <button class="style-btn" id="toggleUnderline">U̲ Underline</button>
+  </div>
+
+  <button id="resetBtn">↺ Reset All Styles</button>
+</div>
+
+<script>
+$(document).ready(function () {
+
+  // Big Font + color change - chaining example
+  $("#bigFont").on("click", function () {
+    $("#textBlock")
+      .css("font-size", "1.5rem")
+      .css("letter-spacing", "1px")
+      .css("transition", "all 0.3s");
+  });
+
+  $("#smallFont").on("click", function () {
+    $("#textBlock")
+      .css("font-size", "0.9rem")
+      .css("letter-spacing", "0px")
+      .css("transition", "all 0.3s");
+  });
+
+  $("#colorRed").on("click", function () {
+    $("#textBlock").css("color", "#f87171").css("text-shadow", "0 0 8px rgba(248,113,113,0.4)");
+  });
+
+  $("#colorGreen").on("click", function () {
+    $("#textBlock").css("color", "#4ade80").css("text-shadow", "0 0 8px rgba(74,222,128,0.4)");
+  });
+
+  $("#bgYellow").on("click", function () {
+    $("#textBlock").css("background-color", "#fef08a").css("color", "#1a1a2e").css("transition", "all 0.3s");
+  });
+
+  $("#bgDark").on("click", function () {
+    $("#textBlock").css("background-color", "#0f3460").css("color", "#eee").css("transition", "all 0.3s");
+  });
+
+  $("#toggleBold").on("click", function () {
+    var isBold = $("#textBlock").css("font-weight") === "700" || $("#textBlock").css("font-weight") === "bold";
+    $("#textBlock").css("font-weight", isBold ? "normal" : "bold");
+  });
+
+  $("#toggleItalic").on("click", function () {
+    var isItalic = $("#textBlock").css("font-style") === "italic";
+    $("#textBlock").css("font-style", isItalic ? "normal" : "italic");
+  });
+
+  $("#toggleUnderline").on("click", function () {
+    var isUnder = $("#textBlock").css("text-decoration-line") === "underline";
+    $("#textBlock").css("text-decoration", isUnder ? "none" : "underline");
+  });
+
+  $("#resetBtn").on("click", function () {
+    $("#textBlock").removeAttr("style").hide().fadeIn(400);
+  });
+});
+</script>
+</body>
+</html>

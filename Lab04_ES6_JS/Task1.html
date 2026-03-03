@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Task 1 - Dynamic List Manager</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 20px;
+    }
+    .container {
+      background: #1e293b;
+      border-radius: 16px;
+      padding: 36px;
+      width: 100%;
+      max-width: 560px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    h1 {
+      font-size: 1.8rem;
+      color: #38bdf8;
+      margin-bottom: 8px;
+    }
+    p.subtitle { color: #94a3b8; margin-bottom: 24px; font-size: 0.9rem; }
+    .input-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #e2e8f0;
+      font-size: 1rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+    input[type="text"]:focus { border-color: #38bdf8; }
+    button.add-btn {
+      padding: 12px 22px;
+      background: #38bdf8;
+      color: #0f172a;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s;
+    }
+    button.add-btn:hover { background: #0ea5e9; }
+    #itemList { list-style: none; }
+    #itemList li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      background: #0f172a;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #1e293b;
+      transition: background 0.2s, border 0.2s;
+      cursor: default;
+    }
+    #itemList li:hover {
+      background: #1e3a5f;
+      border-color: #38bdf8;
+    }
+    .del-btn {
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 14px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+    }
+    .del-btn:hover { background: #dc2626; }
+    #emptyMsg { color: #475569; text-align: center; padding: 20px; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>📋 Dynamic List Manager</h1>
+  <p class="subtitle">Task 1 — DOM Manipulation, Event Handling, CSS Manipulation</p>
+  <div class="input-row">
+    <input type="text" id="itemInput" placeholder="Type an item and press Add..." />
+    <button class="add-btn" id="addBtn">Add</button>
+  </div>
+  <ul id="itemList">
+    <li id="emptyMsg">No items yet. Add something above!</li>
+  </ul>
+</div>
+
+<script>
+$(document).ready(function () {
+
+  function addItem() {
+    var text = $("#itemInput").val().trim();
+    if (text === "") return;
+
+    $("#emptyMsg").remove();
+
+    var li = $("<li></li>").text(text);
+    var delBtn = $("<button></button>").addClass("del-btn").text("Delete");
+
+    delBtn.on("click", function () {
+      $(this).parent().fadeOut(300, function () {
+        $(this).remove();
+        if ($("#itemList li").length === 0) {
+          $("#itemList").append('<li id="emptyMsg">No items yet. Add something above!</li>');
+        }
+      });
+    });
+
+    li.append(delBtn);
+    $("#itemList").append(li.hide().fadeIn(400));
+    $("#itemInput").val("").focus();
+  }
+
+  $("#addBtn").on("click", addItem);
+
+  $("#itemInput").on("keypress", function (e) {
+    if (e.which === 13) addItem();
+  });
+});
+</script>
+</body>
+</html>

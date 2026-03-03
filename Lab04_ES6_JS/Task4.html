@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Task 4 - Tabbed Content</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fafafa;
+      color: #1a1a2e;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    .container { max-width: 700px; margin: 0 auto; }
+    h1 { font-size: 1.8rem; color: #e94560; margin-bottom: 6px; }
+    p.subtitle { color: #888; font-size: 0.88rem; margin-bottom: 30px; }
+
+    .tab-nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 0;
+    }
+    .tab-btn {
+      padding: 11px 26px;
+      background: #eee;
+      border: none;
+      border-radius: 10px 10px 0 0;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      color: #555;
+      transition: background 0.2s, color 0.2s;
+    }
+    .tab-btn.active {
+      background: #e94560;
+      color: white;
+    }
+    .tab-btn:hover:not(.active) { background: #ddd; }
+
+    .tab-panel {
+      display: none;
+      background: white;
+      border-radius: 0 12px 12px 12px;
+      padding: 30px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      margin-bottom: 30px;
+    }
+    .tab-panel.active { display: block; }
+    .tab-panel h2 { font-size: 1.4rem; color: #e94560; margin-bottom: 12px; }
+    .tab-panel p { color: #555; line-height: 1.7; font-size: 0.95rem; }
+    .tab-panel ul { padding-left: 20px; margin-top: 10px; color: #555; line-height: 1.9; }
+
+    .section-card {
+      background: white;
+      border-left: 4px solid #e94560;
+      border-radius: 10px;
+      padding: 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+    .section-card h3 { color: #e94560; margin-bottom: 8px; }
+    .section-card p { color: #666; line-height: 1.7; font-size: 0.93rem; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🗂️ Tabbed Content</h1>
+  <p class="subtitle">Task 4 — DOM Manipulation, Effects & Animations, Event Handling</p>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="home">🏠 Home</button>
+    <button class="tab-btn" data-tab="about">👤 About</button>
+    <button class="tab-btn" data-tab="services">⚙️ Services</button>
+    <button class="tab-btn" data-tab="portfolio">🎨 Portfolio</button>
+    <button class="tab-btn" data-tab="contact">📬 Contact</button>
+  </div>
+
+  <div class="tab-panel active" id="home">
+    <h2>Welcome Home</h2>
+    <p>This is the Home tab. Here you can find an overview of everything available on this site. Use the tabs above to navigate between different sections smoothly.</p>
+  </div>
+
+  <div class="tab-panel" id="about">
+    <h2>About Us</h2>
+    <p>We are a team of passionate developers building great web experiences. Our mission is to create clean, efficient, and beautiful interfaces.</p>
+    <ul>
+      <li>Founded in 2020</li>
+      <li>Team of 12 developers</li>
+      <li>Projects delivered: 80+</li>
+    </ul>
+  </div>
+
+  <div class="tab-panel" id="services">
+    <h2>Our Services</h2>
+    <p>We offer a wide range of web development services:</p>
+    <ul>
+      <li>Frontend Development (HTML, CSS, JS, jQuery)</li>
+      <li>Backend Development (Node.js, PHP)</li>
+      <li>Database Design (MySQL, MongoDB)</li>
+      <li>UI/UX Design & Consulting</li>
+    </ul>
+  </div>
+
+  <div class="tab-panel" id="portfolio">
+    <h2>Portfolio</h2>
+    <p>Here are some of our recent projects:</p>
+    <ul>
+      <li>E-commerce platform — 2024</li>
+      <li>University management system — 2023</li>
+      <li>Real-time chat app — 2023</li>
+      <li>Portfolio website builder — 2022</li>
+    </ul>
+  </div>
+
+  <div class="tab-panel" id="contact">
+    <h2>Contact Us</h2>
+    <p>Reach out to us through any of the channels below:</p>
+    <ul>
+      <li>📧 Email: team@example.com</li>
+      <li>📞 Phone: +92-300-1234567</li>
+      <li>📍 Location: Islamabad, Pakistan</li>
+    </ul>
+  </div>
+
+  <!-- Sections below for smooth scroll demo -->
+  <hr style="margin: 40px 0; border-color: #eee;" />
+  <p style="color:#aaa; text-align:center; font-size:0.85rem; margin-bottom:20px;">↓ Clicking a tab also scrolls to its section below ↓</p>
+
+  <div class="section-card" id="sec-home">
+    <h3>🏠 Home Section</h3>
+    <p>Overview content for the homepage section displayed as a scroll target.</p>
+  </div>
+  <div class="section-card" id="sec-about">
+    <h3>👤 About Section</h3>
+    <p>Detailed information about our team, history, and mission statement.</p>
+  </div>
+  <div class="section-card" id="sec-services">
+    <h3>⚙️ Services Section</h3>
+    <p>Complete list of all professional services we provide to clients.</p>
+  </div>
+  <div class="section-card" id="sec-portfolio">
+    <h3>🎨 Portfolio Section</h3>
+    <p>Showcase of completed projects with descriptions and links.</p>
+  </div>
+  <div class="section-card" id="sec-contact">
+    <h3>📬 Contact Section</h3>
+    <p>Contact form and all ways to get in touch with our team.</p>
+  </div>
+</div>
+
+<script>
+$(document).ready(function () {
+  $(".tab-btn").on("click", function () {
+    var tab = $(this).data("tab");
+
+    // Switch active tab button
+    $(".tab-btn").removeClass("active");
+    $(this).addClass("active");
+
+    // Switch panel with fadeIn
+    $(".tab-panel").removeClass("active").hide();
+    $("#" + tab).fadeIn(400).addClass("active");
+
+    // Smooth scroll to matching section
+    var target = $("#sec-" + tab);
+    if (target.length) {
+      $("html, body").animate({ scrollTop: target.offset().top - 20 }, 500);
+    }
+  });
+});
+</script>
+</body>
+</html>
