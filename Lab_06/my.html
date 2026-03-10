@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 1 - Student Management System</title>
+    <link rel="stylesheet" href="Task1_style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">🎓 Student Management System</h1>
+            <p class="subtitle">ES6 Classes Implementation</p>
+        </header>
+
+        <div class="form-section slide-in">
+            <h2>Add New Student</h2>
+            <form id="studentForm" class="form">
+                <div class="input-group">
+                    <input type="text" id="studentId" placeholder="Student ID" required>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="studentName" placeholder="Full Name" required>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="studentSemester" placeholder="Semester (e.g., Fall 2024)" required>
+                </div>
+                <div class="input-group full-width">
+                    <input type="text" id="studentCourses" placeholder="Courses (comma separated)" required>
+                </div>
+                <button type="submit" class="btn-primary pulse">Add Student 🚀</button>
+            </form>
+        </div>
+
+        <div class="students-section">
+            <h2>All Students <span id="studentCount">0</span></h2>
+            <div id="studentsList" class="students-grid"></div>
+        </div>
+    </div>
+
+    <script src="Task1_script.js"></script>
+</body>
+</html>
