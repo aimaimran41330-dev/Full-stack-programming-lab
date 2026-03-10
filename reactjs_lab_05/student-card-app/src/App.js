@@ -15,7 +15,7 @@ function App() {
       <h1>🎓 Student Information Cards</h1>
       <StudentCard name="Ali Ahmed" rollNo="BSSE-01" department="Software Engineering" university="Air University" color="lightblue" />
       <StudentCard name="Sara Khan" rollNo="BSSE-02" department="AI & ML" university="Air University" color="lightgreen" />
-      <StudentCard name="Umar Farooq" rollNo="BSSE-03" department="Cyber Security" university="Air University" color="lightyellow" />
+      <StudentCard name="Umar Farooq" rollNo="BSSE-03" department="Cyber Security" university="Air University" color="lightred" />
     </div>
   );
 }
