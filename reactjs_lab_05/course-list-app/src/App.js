@@ -1,35 +1,38 @@
-function CourseItem(props) {
+function Greeting(props) {
+  let message = "";
+  let emoji = "";
+
+  if (props.timeOfDay === "morning") {
+    message = "Good Morning!";
+    emoji = "🌅";
+  } else if (props.timeOfDay === "afternoon") {
+    message = "Good Afternoon!";
+    emoji = "☀️";
+  } else if (props.timeOfDay === "evening") {
+    message = "Good Evening!";
+    emoji = "🌆";
+  } else {
+    message = "Good Night!";
+    emoji = "🌙";
+  }
+
   return (
-    <div style={{ border: '2px solid #333', padding: '15px', margin: '10px', borderRadius: '10px', backgroundColor: props.courseType === 'Online' ? '#d0f0ff' : '#fff0d0' }}>
-      <h3>📚 {props.courseName}</h3>
-      <p><b>Instructor:</b> {props.instructor}</p>
-      <p><b>Duration:</b> {props.duration}</p>
-      <p><b>Type:</b> {props.courseType === 'Online' ? '🌐 Online' : '🏫 Offline'}</p>
+    <div style={{ backgroundColor: props.bgColor, padding: '20px', margin: '10px', borderRadius: '10px', width: '350px' }}>
+      <h2>{emoji} {message}</h2>
+      <p>Welcome, <b>{props.name}</b>!</p>
+      <p>Time: {props.timeOfDay}</p>
     </div>
   );
 }
 
 function App() {
-  const courses = [
-    { courseName: "React JS", instructor: "Mr. Sharif", duration: "3 Months", courseType: "Online" },
-    { courseName: "Node.js", instructor: "Mr. Ali", duration: "2 Months", courseType: "Offline" },
-    { courseName: "MongoDB", instructor: "Ms. Sara", duration: "1 Month", courseType: "Online" },
-    { courseName: "Express.js", instructor: "Mr. Ahmed", duration: "2 Months", courseType: "Offline" },
-    { courseName: "Full Stack MERN", instructor: "Mr. Sharif", duration: "6 Months", courseType: "Online" },
-  ];
-
   return (
     <div style={{ padding: '20px' }}>
-      <h1>📋 Course List</h1>
-      {courses.map((course, index) => (
-        <CourseItem
-          key={index}
-          courseName={course.courseName}
-          instructor={course.instructor}
-          duration={course.duration}
-          courseType={course.courseType}
-        />
-      ))}
+      <h1>👋 Dynamic Greeting App</h1>
+      <Greeting name="Ali" timeOfDay="morning" bgColor="lightyellow" />
+      <Greeting name="Sara" timeOfDay="afternoon" bgColor="lightblue" />
+      <Greeting name="Umar" timeOfDay="evening" bgColor="lightpink" />
+      <Greeting name="Ayesha" timeOfDay="night" bgColor="lavender" />
     </div>
   );
 }
