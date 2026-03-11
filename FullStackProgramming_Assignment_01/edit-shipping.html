@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Shipping Address - HotSpring Portable Spas</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ===== TOP BAR ===== */
+    .top-bar {
+      background: #f5f5f5;
+      border-bottom: 1px solid #ddd;
+      font-size: 12px;
+      padding: 6px 0;
+    }
+    .top-bar a {
+      color: #555;
+      text-decoration: none;
+      margin-left: 15px;
+    }
+    .top-bar a:hover { color: #c00; }
+    .top-bar .support-phone { color: #e00; font-weight: bold; }
+
+    /* ===== HEADER ===== */
+    .site-header {
+      padding: 15px 0;
+      border-bottom: 1px solid #eee;
+      background: #fff;
+    }
+    .logo-text {
+      font-size: 32px;
+      font-weight: 900;
+      color: #222;
+      letter-spacing: -1px;
+      line-height: 1;
+      font-family: 'Arial Black', sans-serif;
+    }
+    .logo-text span {
+      color: #e05c1a;
+      font-size: 14px;
+      font-weight: 400;
+      display: block;
+      letter-spacing: 2px;
+    }
+    .cart-btn {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: #444;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    .cart-icon { color: #c00; font-size: 18px; }
+
+    /* ===== RED NAV BAR ===== */
+    .red-nav {
+      background: #c00;
+      padding: 0;
+    }
+    .red-nav .nav-link {
+      color: #fff !important;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      padding: 10px 18px !important;
+      text-transform: uppercase;
+      border-right: 1px solid rgba(255,255,255,0.2);
+    }
+    .red-nav .nav-link:hover { background: rgba(0,0,0,0.15); }
+    .search-bar-section input {
+      border: none;
+      border-radius: 0;
+      font-size: 13px;
+      height: 34px;
+    }
+    .btn-search {
+      background: #444;
+      color: #fff;
+      border: none;
+      border-radius: 0;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 0 20px;
+      height: 34px;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .btn-search:hover { background: #222; }
+    .nav-divider { color: rgba(255,255,255,0.5); padding: 10px 5px; }
+
+    /* ===== BREADCRUMB ===== */
+    .breadcrumb-section {
+      background: #fff;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .breadcrumb-section a {
+      color: #888;
+      font-size: 12px;
+      text-decoration: none;
+    }
+    .breadcrumb-section a:hover { color: #c00; }
+    .breadcrumb-section span {
+      color: #888;
+      font-size: 12px;
+      margin: 0 5px;
+    }
+    .breadcrumb-section .current {
+      color: #555;
+      font-size: 12px;
+    }
+
+    /* ===== PAGE CONTENT ===== */
+    .page-content {
+      background: #f0f0f0;
+      min-height: 500px;
+      padding: 30px 0 50px;
+    }
+    .page-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 20px;
+    }
+    .form-card {
+      background: #e8e8e8;
+      border: 1px solid #d5d5d5;
+      padding: 25px 30px 30px;
+      border-radius: 2px;
+    }
+    .form-card p.intro {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 5px;
+    }
+    .form-card p.required-note {
+      font-size: 12px;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    /* ===== FORM STYLES ===== */
+    .form-row-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .form-row-item label {
+      width: 110px;
+      font-size: 13px;
+      color: #444;
+      text-align: right;
+      padding-right: 10px;
+      flex-shrink: 0;
+    }
+    .form-row-item label .req {
+      color: #c00;
+      margin-left: 2px;
+    }
+    .form-row-item input {
+      flex: 1;
+      max-width: 280px;
+      border: 1px solid #bbb;
+      border-radius: 2px;
+      height: 28px;
+      padding: 2px 8px;
+      font-size: 13px;
+      background: #fff;
+      color: #333;
+      outline: none;
+    }
+    .form-row-item input:focus {
+      border-color: #888;
+      box-shadow: none;
+    }
+    .form-row-item input.error-field {
+      border-color: #c00 !important;
+      background: #fff5f5;
+    }
+    .field-error {
+      font-size: 11px;
+      color: #c00;
+      margin-left: 5px;
+      display: none;
+    }
+
+    /* ===== UPDATE BUTTON ===== */
+    .btn-update {
+      background: #c00;
+      color: #fff;
+      border: none;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 8px 20px;
+      border-radius: 2px;
+      margin-top: 10px;
+      margin-left: 115px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-update:hover { background: #a00; }
+    .btn-update:disabled { background: #888; cursor: not-allowed; }
+
+    /* Success message */
+    .success-msg {
+      display: none;
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      padding: 10px 15px;
+      border-radius: 3px;
+      font-size: 13px;
+      margin-top: 15px;
+      margin-left: 115px;
+    }
+
+    /* ===== BRANDS SECTION ===== */
+    .brands-section {
+      background: #f9f9f9;
+      border-top: 1px solid #e5e5e5;
+      border-bottom: 1px solid #e5e5e5;
+      padding: 20px 0;
+    }
+    .save-banner {
+      background: #f4c430;
+      color: #333;
+      text-align: center;
+      padding: 10px 15px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .save-banner .big { font-size: 18px; color: #c00; }
+
+    /* ===== FOOTER ===== */
+    .site-footer {
+      background: #2b2b2b;
+      color: #aaa;
+      font-size: 12px;
+      padding: 35px 0 15px;
+    }
+    .site-footer h6 {
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+    .site-footer a {
+      color: #aaa;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+      border-bottom: 1px solid #3a3a3a;
+      padding-bottom: 5px;
+    }
+    .site-footer a:hover { color: #fff; }
+    .footer-bottom {
+      border-top: 1px solid #3a3a3a;
+      margin-top: 20px;
+      padding-top: 12px;
+      text-align: center;
+      font-size: 11px;
+      color: #777;
+    }
+    .newsletter-input {
+      width: 100%;
+      border: none;
+      height: 30px;
+      padding: 0 8px;
+      font-size: 12px;
+      background: #3a3a3a;
+      color: #ccc;
+      outline: none;
+      margin-bottom: 10px;
+    }
+    .social-icons a {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      background: #555;
+      color: #fff;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 28px;
+      font-size: 12px;
+      margin-right: 4px;
+      margin-bottom: 0;
+      border: none;
+    }
+    .social-icons a:hover { background: #c00; }
+    .payment-icons span {
+      background: #555;
+      color: #fff;
+      font-size: 10px;
+      padding: 3px 6px;
+      border-radius: 2px;
+      margin-right: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          Call for Customer support: <span class="support-phone">020 38989565</span>
+        </div>
+        <div>
+          <a href="my-account.html">My Account</a>
+          <a href="#">Wishlist</a>
+          <a href="#">To Checkout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <a href="index.html" style="text-decoration:none;">
+          <div class="logo-text">
+            HOTSPRING<sup style="font-size:10px;">®</sup>
+            <span>Portable Spas</span>
+          </div>
+        </a>
+        <div class="cart-btn">
+          <span class="cart-icon">🛒</span>
+          My Cart: &nbsp; 0 Items (s)
+          <span>▼</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- RED NAVBAR + SEARCH -->
+  <div class="red-nav">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between">
+        <ul class="nav mb-0">
+          <li class="nav-item"><a class="nav-link" href="category.html">CATAGORY</a></li>
+          <span class="nav-divider">|</span>
+          <li class="nav-item"><a class="nav-link" href="#">BRAND</a></li>
+          <span class="nav-divider">|</span>
+          <li class="nav-item"><a class="nav-link" href="#">INFO</a></li>
+        </ul>
+        <div class="d-flex" style="gap:0;">
+          <input type="text" class="form-control" placeholder="Search" style="width:280px; border-radius:0;">
+          <button class="btn-search">SEARCH</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb-section">
+    <div class="container">
+      <a href="index.html">Home</a>
+      <span>›</span>
+      <a href="my-account.html">User Account</a>
+      <span>›</span>
+      <span class="current">My Account</span>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h2 class="page-title">Edit Shipping Address</h2>
+
+          <div class="form-card">
+            <p class="intro">Please fill the form bellow to update your Profile details.</p>
+            <p class="required-note">*Required Fields</p>
+
+            <form id="shippingForm" novalidate>
+
+              <!-- First Name -->
+              <div class="form-row-item">
+                <label>First Name <span class="req">*</span></label>
+                <input type="text" id="firstName" placeholder="">
+                <span class="field-error" id="err-firstName">Required</span>
+              </div>
+
+              <!-- Last Name -->
+              <div class="form-row-item">
+                <label>Last Name <span class="req">*</span></label>
+                <input type="text" id="lastName" placeholder="">
+                <span class="field-error" id="err-lastName">Required</span>
+              </div>
+
+              <!-- Email -->
+              <div class="form-row-item">
+                <label>Email <span class="req">*</span></label>
+                <input type="email" id="email" placeholder="">
+                <span class="field-error" id="err-email">Valid email required</span>
+              </div>
+
+              <!-- Phone -->
+              <div class="form-row-item">
+                <label>Phone <span class="req">*</span></label>
+                <input type="tel" id="phone" placeholder="">
+                <span class="field-error" id="err-phone">Required</span>
+              </div>
+
+              <!-- City -->
+              <div class="form-row-item">
+                <label>City <span class="req">*</span></label>
+                <input type="text" id="city" placeholder="">
+                <span class="field-error" id="err-city">Required</span>
+              </div>
+
+              <!-- State -->
+              <div class="form-row-item">
+                <label>State <span class="req">*</span></label>
+                <input type="text" id="state" placeholder="">
+                <span class="field-error" id="err-state">Required</span>
+              </div>
+
+              <!-- Zip Code -->
+              <div class="form-row-item">
+                <label>Zip Code <span class="req">*</span></label>
+                <input type="text" id="zipCode" placeholder="">
+                <span class="field-error" id="err-zipCode">Required</span>
+              </div>
+
+              <!-- Country -->
+              <div class="form-row-item">
+                <label>Country <span class="req">*</span></label>
+                <input type="text" id="country" placeholder="">
+                <span class="field-error" id="err-country">Required</span>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="btn-update" id="updateBtn">UPDATE ADDRESS</button>
+
+              <!-- Success Message -->
+              <div class="success-msg" id="successMsg">
+                ✅ Shipping address updated successfully!
+              </div>
+
+            </form>
+          </div><!-- /form-card -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRANDS SECTION -->
+  <div class="brands-section">
+    <div class="container">
+      <div class="row align-items-center justify-content-center g-4">
+        <div class="col-auto">
+          <div class="save-banner">
+            <div class="big">SAVE $1,000'S</div>
+            ON THE TOP SPA BRANDS<br>
+            <small>HUGE DISCOUNTS &nbsp; SHOP EARLY FOR THE BEST SELECTION!</small>
+          </div>
+        </div>
+        <div class="col-auto text-center">
+          <div style="font-size:22px; color:#3a7abf; font-weight:700; font-style:italic;">
+            🌊 <span style="color:#3a7abf;">OCEANIC</span><span style="color:#5a9ad5;">Spa</span>
+          </div>
+        </div>
+        <div class="col-auto text-center">
+          <div style="font-size:20px; font-weight:700; color:#c05;">
+            🌸 Caldera<span style="color:#888;">Spas</span>
+          </div>
+        </div>
+        <div class="col-auto text-center">
+          <div style="font-size:20px; font-weight:700; color:#2a7a2a;">
+            🌴 Island<span style="font-weight:400;">Spas</span>
+            <div style="font-size:10px; color:#888; letter-spacing:2px;">BY ARTESIAN</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row g-4">
+
+        <!-- Contact Us -->
+        <div class="col-lg-3 col-md-6">
+          <h6>Contact Us</h6>
+          <p style="margin-bottom:5px;">yoursitename.com</p>
+          <p style="color:#fff; margin-bottom:5px;">CALL 24/7: 888 - 201 - 8899</p>
+          <p style="margin-bottom:3px;">Your Address:</p>
+          <p style="margin-bottom:3px;">Street</p>
+          <p style="margin-bottom:3px;">State & Zip Code</p>
+          <p style="margin-bottom:10px;">City & Country</p>
+          <p style="margin-bottom:15px;">Email: servicemail@yoursitename.com</p>
+          <div class="social-icons">
+            <a href="#">T</a>
+            <a href="#">f</a>
+            <a href="#">in</a>
+            <a href="#">g+</a>
+            <a href="#">▶</a>
+            <a href="#">P</a>
+          </div>
+        </div>
+
+        <!-- Information -->
+        <div class="col-lg-3 col-md-6">
+          <h6>Information</h6>
+          <a href="about.html">ABOUT US</a>
+          <a href="#">CUSTOMER SERVICE</a>
+          <a href="#">PRIVACY POLICY</a>
+          <a href="#">SITE MAP</a>
+          <a href="#">SEARCH TERMS</a>
+          <a href="contact.html">CONATACT US</a>
+          <a href="about.html">ABOUT US</a>
+        </div>
+
+        <!-- My Account -->
+        <div class="col-lg-3 col-md-6">
+          <h6>My Account</h6>
+          <a href="login.html">SIGN IN</a>
+          <a href="#">VIEW CART</a>
+          <a href="#">MY WISHLIST</a>
+        </div>
+
+        <!-- Newsletter -->
+        <div class="col-lg-3 col-md-6">
+          <h6>Signup for a News Letter</h6>
+          <p style="margin-bottom:8px;">SIGN UP FOR OUR NEWS LETTER:</p>
+          <input type="email" class="newsletter-input" placeholder="">
+          <div class="payment-icons">
+            <p style="color:#888; margin-bottom:5px;">PAYMENT SOLUTIONS</p>
+            <span>VISA</span>
+            <span>MC</span>
+            <span>AMEX</span>
+            <span>DISC</span>
+            <span>PP</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        © 2014 Hottubspaservice.com. All Rights Reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+    $(document).ready(function () {
+
+      // ===== jQuery Form Validation =====
+      function validateField(fieldId, errorId, validationType) {
+        var val = $('#' + fieldId).val().trim();
+        var isValid = true;
+
+        if (validationType === 'email') {
+          var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          isValid = emailRegex.test(val);
+        } else {
+          isValid = val.length > 0;
+        }
+
+        if (!isValid) {
+          $('#' + fieldId).addClass('error-field');
+          $('#' + errorId).fadeIn(200);
+        } else {
+          $('#' + fieldId).removeClass('error-field');
+          $('#' + errorId).fadeOut(200);
+        }
+
+        return isValid;
+      }
+
+      // Real-time validation on blur
+      $('#firstName').on('blur', function () { validateField('firstName', 'err-firstName', 'text'); });
+      $('#lastName').on('blur',  function () { validateField('lastName',  'err-lastName',  'text'); });
+      $('#email').on('blur',     function () { validateField('email',     'err-email',     'email'); });
+      $('#phone').on('blur',     function () { validateField('phone',     'err-phone',     'text'); });
+      $('#city').on('blur',      function () { validateField('city',      'err-city',      'text'); });
+      $('#state').on('blur',     function () { validateField('state',     'err-state',     'text'); });
+      $('#zipCode').on('blur',   function () { validateField('zipCode',   'err-zipCode',   'text'); });
+      $('#country').on('blur',   function () { validateField('country',   'err-country',   'text'); });
+
+      // Remove error styling on focus
+      $('input').on('focus', function () {
+        $(this).removeClass('error-field');
+      });
+
+      // ===== Form Submit =====
+      $('#shippingForm').on('submit', function (e) {
+        e.preventDefault();
+
+        var v1 = validateField('firstName', 'err-firstName', 'text');
+        var v2 = validateField('lastName',  'err-lastName',  'text');
+        var v3 = validateField('email',     'err-email',     'email');
+        var v4 = validateField('phone',     'err-phone',     'text');
+        var v5 = validateField('city',      'err-city',      'text');
+        var v6 = validateField('state',     'err-state',     'text');
+        var v7 = validateField('zipCode',   'err-zipCode',   'text');
+        var v8 = validateField('country',   'err-country',   'text');
+
+        if (v1 && v2 && v3 && v4 && v5 && v6 && v7 && v8) {
+          // Disable button during save
+          $('#updateBtn').prop('disabled', true).text('UPDATING...');
+
+          setTimeout(function () {
+            $('#successMsg').fadeIn(400);
+            $('#updateBtn').prop('disabled', false).text('UPDATE ADDRESS');
+
+            // Redirect to my-account after success
+            setTimeout(function () {
+              window.location.href = 'my-account.html';
+            }, 2000);
+          }, 800);
+
+        } else {
+          // Shake invalid fields
+          $('.error-field').each(function () {
+            var el = $(this);
+            el.animate({ marginLeft: '+=8px' }, 60)
+              .animate({ marginLeft: '-=16px' }, 60)
+              .animate({ marginLeft: '+=16px' }, 60)
+              .animate({ marginLeft: '-=16px' }, 60)
+              .animate({ marginLeft: '+=8px' }, 60);
+          });
+        }
+      });
+
+    });
+  </script>
+
+</body>
+</html>

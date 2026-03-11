@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us - HotSpring Portable Spas</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css"/>
+
+  <style>
+    :root {
+      --red: #cc0000;
+      --dark-navy: #1a1f2e;
+      --border: #ddd;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; font-size: 14px; color: #333; background: #e8ecef; }
+
+    /* TOP BAR */
+    .top-bar { background: #fff; border-bottom: 1px solid var(--border); font-size: 12px; padding: 5px 0; }
+    .top-bar a { color: #555; text-decoration: none; margin-left: 15px; }
+    .top-bar a:hover { color: var(--red); }
+    .top-bar .phone { color: var(--red); font-weight: bold; }
+
+    /* HEADER */
+    .main-header { background: #fff; padding: 10px 0; border-bottom: 1px solid var(--border); }
+    .logo-text { font-size: 32px; font-weight: 900; color: #111; letter-spacing: -1px; }
+    .logo-text span { color: var(--red); }
+    .logo-sub { color: var(--red); font-size: 13px; margin-top: -5px; font-style: italic; }
+    .cart-box {
+      background: var(--red); color: #fff; padding: 8px 15px;
+      border-radius: 3px; font-size: 13px;
+      display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+    }
+
+    /* SEARCH BAR */
+    .search-bar { background: var(--red); padding: 8px 0; }
+    .search-bar .cat-links a {
+      color: #fff; font-size: 13px; font-weight: bold;
+      text-transform: uppercase; text-decoration: none;
+      padding: 0 18px; border-right: 1px solid rgba(255,255,255,0.4);
+    }
+    .search-bar .cat-links a:last-child { border-right: none; }
+    .search-bar .cat-links a:hover { text-decoration: underline; }
+    .search-input { border: none; border-radius: 0; font-size: 13px; padding: 6px 12px; }
+    .search-btn {
+      background: #444; color: #fff; border: none;
+      padding: 6px 18px; font-weight: bold; font-size: 13px;
+      text-transform: uppercase; cursor: pointer;
+    }
+    .search-btn:hover { background: #222; }
+
+    /* BREADCRUMB */
+    .breadcrumb-section {
+      background: #fff; padding: 8px 0;
+      border-bottom: 1px solid var(--border); font-size: 12px;
+    }
+    .breadcrumb-section a { color: var(--red); text-decoration: none; }
+    .breadcrumb-section span { color: #555; margin: 0 5px; }
+
+    /* PAGE WRAPPER */
+    .page-wrapper {
+      background: linear-gradient(180deg, #c8d8e8 0%, #a0b8cc 30%, #7a9db8 60%, #e0e0e0 100%);
+      min-height: 600px;
+      padding: 20px 0 30px;
+    }
+
+    /* ABOUT CONTAINER */
+    .about-container {
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 25px 30px 40px;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .about-container > h2 {
+      font-size: 22px; font-weight: 700; color: #222;
+      margin-bottom: 18px;
+    }
+
+    /* Section: Welcome */
+    .section-block {
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin-bottom: 25px;
+    }
+    .section-block h5 {
+      font-size: 15px; font-weight: 700; color: #333;
+      margin-bottom: 12px;
+    }
+    .about-text { font-size: 12px; color: #555; line-height: 1.7; }
+
+    /* Showroom image placeholder */
+    .showroom-img {
+      width: 100%; height: 130px;
+      background: linear-gradient(135deg, #c8d0d8, #9aabb8);
+      display: flex; align-items: center; justify-content: center;
+      color: #777; font-size: 12px; border: 1px solid #ccc;
+      border-radius: 2px;
+    }
+
+    /* Team Members */
+    .team-member { text-align: center; margin-bottom: 10px; }
+    .member-photo {
+      width: 100%; height: 120px;
+      background: linear-gradient(135deg, #d0d8e0, #b0bec8);
+      display: flex; align-items: center; justify-content: center;
+      color: #aaa; font-size: 28px;
+      border: 1px solid #ccc; margin-bottom: 8px;
+      overflow: hidden;
+    }
+    .member-name { font-size: 13px; font-weight: 700; color: #333; }
+    .member-title { font-size: 11px; color: #777; margin-bottom: 5px; }
+    .member-desc { font-size: 11px; color: #888; line-height: 1.5; }
+
+    /* BRANDS */
+    .brands-section { background: #fff; padding: 20px 0; border-top: 1px solid var(--border); }
+    .brand-item {
+      text-align: center; padding: 10px 20px;
+      border-right: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .brand-item:last-child { border-right: none; }
+
+    /* FOOTER */
+    footer { background: var(--dark-navy); color: #ccc; padding: 35px 0 15px; }
+    footer h6 { color: #fff; font-size: 13px; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 0.5px; }
+    footer ul { list-style: none; padding: 0; }
+    footer ul li { margin-bottom: 6px; }
+    footer ul li a { color: #aaa; text-decoration: none; font-size: 12px; }
+    footer ul li a:hover { color: #fff; }
+    .footer-contact p { font-size: 12px; color: #aaa; margin-bottom: 4px; }
+    .footer-contact .phone { color: #fff; font-size: 14px; font-weight: bold; }
+    .social-icons a {
+      color: #fff; background: #444; width: 28px; height: 28px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 50%; font-size: 12px; margin-right: 5px; margin-top: 10px;
+      text-decoration: none; transition: background 0.2s;
+    }
+    .social-icons a:hover { background: var(--red); }
+    .newsletter-input {
+      width: 100%; padding: 7px 10px; border: 1px solid #555;
+      background: #2a2f3e; color: #fff; font-size: 12px; margin-bottom: 10px;
+    }
+    .payment-icons span {
+      background: #fff; color: #333; padding: 3px 8px;
+      font-size: 10px; font-weight: bold; border-radius: 2px; margin-right: 4px;
+    }
+    .footer-bottom {
+      border-top: 1px solid #2a2f3e; margin-top: 25px;
+      padding-top: 12px; text-align: center; font-size: 11px; color: #666;
+    }
+
+    /* Animate team members on scroll */
+    .team-member {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .team-member.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>Call for Customer support: <span class="phone">020 38989565</span></div>
+      <div>
+        <a href="my-account.html">My Account</a>
+        <a href="#">Wishlist</a>
+        <a href="#">To Checkout</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="main-header">
+  <div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <a href="index.html" style="text-decoration:none;">
+          <div class="logo-text">HOT<span>SPRING</span> <sup style="font-size:14px;">®</sup></div>
+          <div class="logo-sub">Portable Spas</div>
+        </a>
+      </div>
+      <a href="#" class="cart-box">
+        <i class="fas fa-shopping-cart"></i>
+        My Cart &nbsp; 0 Item(s) &nbsp; <i class="fas fa-chevron-down"></i>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- SEARCH BAR -->
+<div class="search-bar">
+  <div class="container-fluid px-4">
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="cat-links">
+        <a href="category.html">CATAGORY</a>
+        <a href="#">BRAND</a>
+        <a href="#">INFO</a>
+      </div>
+      <div class="d-flex">
+        <input type="text" class="search-input form-control" placeholder="Search" style="width:320px;"/>
+        <button class="search-btn">SEARCH</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb-section">
+  <div class="container-fluid px-4">
+    <a href="index.html">Home</a>
+    <span>›</span>
+    <span>About Us</span>
+  </div>
+</div>
+
+<!-- MAIN PAGE -->
+<div class="page-wrapper">
+  <div class="container-fluid px-4">
+
+    <div class="about-container">
+      <h2>About Us</h2>
+
+      <!-- Welcome Section -->
+      <div class="section-block">
+        <h5>Welcome to the Company</h5>
+        <div class="row">
+          <div class="col-md-8">
+            <p class="about-text mb-3">
+              This Is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. Sed non mauris vitae erat consequat auctor eu in elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris in erat justo. Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi. Proin condimentum fermentum nunc. Etiam pharetra, erat sed fermentum feugiat, velit mauris egestas quam, ut aliquam massa nisl quis neque. Suspendisse in orci enim.
+            </p>
+            <p class="about-text">
+              This is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. Sed non mauris vitae erat consequat auctor eu in elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris in erat justo. Nulla ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi. Proin condimentum fermentum nunc. Etiam pharetra, erat sed fermentum feugiat, velit mauris egestas quam, ut aliquam massa nisl quis neque. Suspendisse in orci enim.
+            </p>
+          </div>
+          <div class="col-md-4">
+            <div class="showroom-img">
+              <div style="text-align:center;">
+                <i class="fas fa-store fa-2x mb-2" style="color:#999;"></i><br>
+                <span>Showroom / Spa Display</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Our Company Members -->
+      <div class="section-block">
+        <h5>Our Company members</h5>
+        <p class="about-text mb-3">
+          This is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio.
+        </p>
+
+        <!-- Team Members Row -->
+        <div class="row g-3 mt-2" id="teamSection">
+
+          <div class="col-6 col-md-3">
+            <div class="team-member">
+              <div class="member-photo">
+                <i class="fas fa-user-tie"></i>
+              </div>
+              <div class="member-name">Jennifer Lawrence</div>
+              <div class="member-title">Business Consultant</div>
+              <div class="member-desc">This is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit auctor.</div>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="team-member">
+              <div class="member-photo">
+                <i class="fas fa-user-tie"></i>
+              </div>
+              <div class="member-name">Jennifer Lawrence</div>
+              <div class="member-title">Business Consultant</div>
+              <div class="member-desc">This is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit auctor.</div>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="team-member">
+              <div class="member-photo">
+                <i class="fas fa-user-tie"></i>
+              </div>
+              <div class="member-name">Jennifer Lawrence</div>
+              <div class="member-title">Business Consultant</div>
+              <div class="member-desc">This is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit auctor.</div>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="team-member">
+              <div class="member-photo">
+                <i class="fas fa-user-tie"></i>
+              </div>
+              <div class="member-name">Jennifer Lawrence</div>
+              <div class="member-title">Business Consultant</div>
+              <div class="member-desc">This is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit auctor.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- BRANDS -->
+<div class="brands-section">
+  <div class="container-fluid px-4">
+    <div class="row">
+      <div class="col-3 brand-item">
+        <div style="background:#ffd700;padding:8px 15px;border-radius:3px;">
+          <span style="font-size:11px;font-weight:900;color:#cc0000;">SAVE $1,000'S</span><br>
+          <span style="font-size:9px;color:#333;">ON THE TOP SPA BRANDS</span>
+        </div>
+      </div>
+      <div class="col-3 brand-item">
+        <span style="font-size:18px;font-weight:900;color:#2a6496;font-style:italic;">OCEANIC<span style="font-size:12px;">Spa</span></span>
+      </div>
+      <div class="col-3 brand-item">
+        <span style="font-size:18px;font-weight:900;color:#cc0000;font-style:italic;">✦ Caldera<span style="font-weight:400;color:#555;font-size:14px;">Spas</span></span>
+      </div>
+      <div class="col-3 brand-item">
+        <span style="font-size:18px;font-weight:900;color:#2e7d32;font-style:italic;">🌴 Island<span style="font-weight:400;color:#555;font-size:14px;">Spas</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container-fluid px-4">
+    <div class="row">
+      <div class="col-md-3 footer-contact">
+        <h6>CONTACT US</h6>
+        <p>yourSitename.com</p>
+        <p class="phone">CALL 24/7: 888-201-8899</p>
+        <p>Your Address:<br>Street<br>State &amp; Zip Code<br>City &amp; Country<br>Email: servicemail@yoursitename.com</p>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-google-plus-g"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+          <a href="#"><i class="fab fa-pinterest"></i></a>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <h6>INFORMATION</h6>
+        <ul>
+          <li><a href="about.html">ABOUT US</a></li>
+          <li><a href="#">CUSTOMER SERVICE</a></li>
+          <li><a href="#">PRIVACY POLICY</a></li>
+          <li><a href="#">SITE MAP</a></li>
+          <li><a href="#">SEARCH TERMS</a></li>
+          <li><a href="contact.html">CONATACT US</a></li>
+          <li><a href="about.html">ABOUT US</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h6>MY ACCOUNT</h6>
+        <ul>
+          <li><a href="login.html">SIGN IN</a></li>
+          <li><a href="#">VIEW CART</a></li>
+          <li><a href="#">MY WISHLIST</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h6>SIGNUP FOR A NEWS LETTER</h6>
+        <p style="font-size:11px;color:#aaa;">SIGN UP FOR OUR NEWS LETTER:</p>
+        <input type="email" class="newsletter-input" placeholder="Enter your email"/>
+        <div class="payment-icons mt-2">
+          <p style="font-size:11px;color:#aaa;margin-bottom:6px;">PAYMENT SOLUTIONS</p>
+          <span>VISA</span><span>MC</span><span>AMEX</span><span>PayPal</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2014 Hottubspaservice.com. All Rights Reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- jQuery + JS: Scroll Animation for team members -->
+<script>
+  $(document).ready(function () {
+
+    // Animate team members when they come into view (Intersection Observer + jQuery)
+    function checkVisibility() {
+      $('.team-member').each(function (index) {
+        const elemTop = $(this).offset().top;
+        const scrollBottom = $(window).scrollTop() + $(window).height();
+        if (scrollBottom > elemTop + 30) {
+          const $el = $(this);
+          setTimeout(function () {
+            $el.addClass('visible');
+          }, index * 150); // staggered delay
+        }
+      });
+    }
+
+    // Run on load and scroll
+    checkVisibility();
+    $(window).on('scroll', function () {
+      checkVisibility();
+    });
+
+  });
+</script>
+
+<script src="js/main.js"></script>
+</body>
+</html>
