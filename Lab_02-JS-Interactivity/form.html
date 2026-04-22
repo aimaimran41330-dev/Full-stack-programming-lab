@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Form Validation</title>
+</head>
+<body>
+
+<h2>Registration Form</h2>
+
+<input type="text" id="name" placeholder="Name"><br><br>
+<input type="text" id="email" placeholder="Email"><br><br>
+<input type="number" id="age" placeholder="Age"><br><br>
+<input type="password" id="password" placeholder="Password"><br><br>
+
+<button onclick="validate()">Submit</button>
+
+<p id="message"></p>
+
+<script>
+function validate(){
+let name = document.getElementById("name").value;
+let email = document.getElementById("email").value;
+let age = document.getElementById("age").value;
+let pass = document.getElementById("password").value;
+
+if(name==""){
+document.getElementById("message").innerText="Name required";
+return;
+}
+
+if(age<18 || age>60){
+document.getElementById("message").innerText="Age must be 18-60";
+return;
+}
+
+if(!email.includes("@")){
+document.getElementById("message").innerText="Invalid Email";
+return;
+}
+
+if(pass.length<6){
+document.getElementById("message").innerText="Password too short";
+return;
+}
+
+let confirmBox = confirm("Are you sure?");
+if(confirmBox){
+alert("Registration Successful!");
+}
+}
+</script>
+
+</body>
+</html>

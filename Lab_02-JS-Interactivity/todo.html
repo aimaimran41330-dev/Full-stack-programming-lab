@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>To Do List</title>
+<style>
+.completed{text-decoration: line-through;}
+</style>
+</head>
+<body>
+
+<h2>To Do List</h2>
+
+<div id="tasks">
+<p id="task1">Task 1 <button onclick="complete('task1')">Complete</button></p>
+<p id="task2">Task 2 <button onclick="complete('task2')">Complete</button></p>
+<p id="task3">Task 3 <button onclick="complete('task3')">Complete</button></p>
+</div>
+
+<script>
+function complete(id){
+document.getElementById(id).classList.toggle("completed");
+}
+</script>
+
+</body>
+</html>

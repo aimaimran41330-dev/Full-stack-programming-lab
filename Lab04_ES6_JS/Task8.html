@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Task 8 - Quiz Game</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    .quiz-box {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 560px;
+      width: 100%;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+      color: white;
+    }
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+    h1 { font-size: 1.5rem; color: #a5b4fc; }
+    #qCounter { color: #6366f1; font-size: 0.9rem; font-weight: 600; }
+    .progress-bar {
+      background: rgba(255,255,255,0.1);
+      border-radius: 99px;
+      height: 6px;
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+    #progressFill {
+      height: 100%;
+      background: linear-gradient(90deg, #6366f1, #a78bfa);
+      border-radius: 99px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+    #questionText {
+      font-size: 1.15rem;
+      font-weight: 600;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      color: #e0e7ff;
+    }
+    .options-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .option-btn {
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.07);
+      border: 1.5px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      color: #c7d2fe;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.2s, border 0.2s;
+      width: 100%;
+    }
+    .option-btn:hover:not(:disabled) {
+      background: rgba(99,102,241,0.3);
+      border-color: #6366f1;
+    }
+    .option-btn.correct {
+      background: rgba(34,197,94,0.25);
+      border-color: #22c55e;
+      color: #86efac;
+    }
+    .option-btn.wrong {
+      background: rgba(239,68,68,0.25);
+      border-color: #ef4444;
+      color: #fca5a5;
+    }
+    #feedback {
+      margin-top: 16px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      min-height: 24px;
+      color: #a5b4fc;
+    }
+    #nextBtn {
+      margin-top: 24px;
+      width: 100%;
+      padding: 14px;
+      background: #6366f1;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      display: none;
+      transition: background 0.2s;
+    }
+    #nextBtn:hover { background: #4f46e5; }
+    #scoreCard {
+      display: none;
+      text-align: center;
+    }
+    .score-circle {
+      width: 130px; height: 130px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #a78bfa);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      box-shadow: 0 0 40px rgba(99,102,241,0.4);
+    }
+    .score-circle .score-num { font-size: 2.5rem; font-weight: 800; color: white; line-height: 1; }
+    .score-circle .score-label { font-size: 0.8rem; color: rgba(255,255,255,0.7); }
+    #scoreCard h2 { font-size: 1.5rem; margin-bottom: 10px; color: #a5b4fc; }
+    #scoreCard p { color: #818cf8; font-size: 0.95rem; margin-bottom: 24px; }
+    #restartBtn {
+      padding: 14px 36px;
+      background: #6366f1;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #restartBtn:hover { background: #4f46e5; }
+  </style>
+</head>
+<body>
+<div class="quiz-box">
+  <div id="quizSection">
+    <div class="quiz-header">
+      <h1>🧠 jQuery Quiz</h1>
+      <span id="qCounter">Q 1 / 6</span>
+    </div>
+    <div class="progress-bar"><div id="progressFill"></div></div>
+    <div id="questionText">Loading question...</div>
+    <ul class="options-list" id="optionsList"></ul>
+    <div id="feedback"></div>
+    <button id="nextBtn">Next Question →</button>
+  </div>
+
+  <div id="scoreCard">
+    <div class="score-circle">
+      <span class="score-num" id="scoreNum">0</span>
+      <span class="score-label">out of 6</span>
+    </div>
+    <h2 id="scoreTitle">Quiz Complete!</h2>
+    <p id="scoreMsg">Good effort! Keep practicing.</p>
+    <button id="restartBtn">🔄 Play Again</button>
+  </div>
+</div>
+
+<script>
+$(document).ready(function () {
+  var questions = [
+    {
+      q: "What does jQuery's $ sign represent?",
+      options: ["A variable", "The jQuery function", "A CSS selector only", "None of the above"],
+      answer: 1
+    },
+    {
+      q: "Which method is used to hide an element with jQuery?",
+      options: [".remove()", ".invisible()", ".hide()", ".display('none')"],
+      answer: 2
+    },
+    {
+      q: "How do you select an element with id='box' in jQuery?",
+      options: ["$('.box')", "$('#box')", "$('box')", "$(*box*)"],
+      answer: 1
+    },
+    {
+      q: "Which jQuery method sends an HTTP GET request?",
+      options: ["$.post()", "$.fetch()", "$.get()", "$.request()"],
+      answer: 2
+    },
+    {
+      q: "What does .fadeIn() do in jQuery?",
+      options: ["Removes element", "Gradually shows hidden element", "Changes color", "Adds CSS class"],
+      answer: 1
+    },
+    {
+      q: "Which event fires when DOM is fully loaded in jQuery?",
+      options: ["$(window).load()", "$(document).ready()", "$(body).init()", "$.onLoad()"],
+      answer: 1
+    }
+  ];
+
+  var current = 0;
+  var score = 0;
+  var answered = false;
+
+  function loadQuestion() {
+    answered = false;
+    var q = questions[current];
+    var progress = ((current) / questions.length) * 100;
+
+    $("#progressFill").css("width", progress + "%");
+    $("#qCounter").text("Q " + (current + 1) + " / " + questions.length);
+    $("#questionText").hide().text(q.q).fadeIn(400);
+    $("#feedback").text("");
+    $("#nextBtn").hide();
+    $("#optionsList").empty();
+
+    q.options.forEach(function (opt, i) {
+      var btn = $("<button></button>").addClass("option-btn").text(opt);
+      btn.on("click", function () {
+        if (answered) return;
+        answered = true;
+        $(".option-btn").prop("disabled", true);
+        if (i === q.answer) {
+          $(this).addClass("correct");
+          score++;
+          $("#feedback").css("color", "#86efac").text("✅ Correct!");
+        } else {
+          $(this).addClass("wrong");
+          $($(".option-btn")[q.answer]).addClass("correct");
+          $("#feedback").css("color", "#fca5a5").text("❌ Wrong! Correct answer is highlighted.");
+        }
+        $("#nextBtn").fadeIn(300);
+      });
+      var li = $("<li></li>").append(btn);
+      $("#optionsList").append(li);
+    });
+  }
+
+  $("#nextBtn").on("click", function () {
+    current++;
+    if (current < questions.length) {
+      loadQuestion();
+    } else {
+      showScore();
+    }
+  });
+
+  function showScore() {
+    $("#progressFill").css("width", "100%");
+    $("#quizSection").fadeOut(400, function () {
+      $("#scoreNum").text(score);
+      var msg = score >= 5 ? "Excellent work! You're a jQuery pro! 🎉" :
+                score >= 3 ? "Good job! Keep practicing! 💪" :
+                "Keep learning! You'll get there! 📚";
+      var title = score >= 5 ? "Outstanding!" : score >= 3 ? "Well Done!" : "Keep Practicing!";
+      $("#scoreTitle").text(title);
+      $("#scoreMsg").text(msg);
+      $("#scoreCard").hide().fadeIn(500);
+    });
+  }
+
+  $("#restartBtn").on("click", function () {
+    current = 0; score = 0;
+    $("#scoreCard").fadeOut(300, function () {
+      $("#quizSection").fadeIn(400);
+      loadQuestion();
+    });
+  });
+
+  loadQuestion();
+});
+</script>
+</body>
+</html>
