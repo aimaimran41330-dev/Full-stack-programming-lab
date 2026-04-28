@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secure Checkouts - HotSpring Portable Spas</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ===== TOP BAR ===== */
+    .top-bar {
+      background: #f5f5f5;
+      border-bottom: 1px solid #ddd;
+      font-size: 12px;
+      padding: 6px 0;
+    }
+    .top-bar a { color: #555; text-decoration: none; margin-left: 15px; }
+    .top-bar a:hover { color: #c00; }
+    .top-bar .support-phone { color: #e00; font-weight: bold; }
+
+    /* ===== HEADER ===== */
+    .site-header { padding: 15px 0; border-bottom: 1px solid #eee; background: #fff; }
+    .logo-text {
+      font-size: 32px; font-weight: 900; color: #222;
+      letter-spacing: -1px; line-height: 1;
+      font-family: 'Arial Black', sans-serif;
+    }
+    .logo-text span { color: #e05c1a; font-size: 14px; font-weight: 400; display: block; letter-spacing: 2px; }
+    .cart-btn {
+      background: #fff; border: 1px solid #ccc; border-radius: 3px;
+      padding: 6px 14px; font-size: 13px; color: #444;
+      display: flex; align-items: center; gap: 8px; cursor: pointer;
+    }
+    .cart-icon { color: #c00; font-size: 18px; }
+
+    /* ===== RED NAVBAR ===== */
+    .red-nav { background: #c00; padding: 0; }
+    .red-nav .nav-link {
+      color: #fff !important; font-size: 13px; font-weight: 600;
+      letter-spacing: 1px; padding: 10px 18px !important;
+      text-transform: uppercase; border-right: 1px solid rgba(255,255,255,0.2);
+    }
+    .red-nav .nav-link:hover { background: rgba(0,0,0,0.15); }
+    .nav-divider { color: rgba(255,255,255,0.5); padding: 10px 5px; }
+    .btn-search {
+      background: #444; color: #fff; border: none; border-radius: 0;
+      font-size: 12px; font-weight: 700; letter-spacing: 1px;
+      padding: 0 20px; height: 34px; text-transform: uppercase; cursor: pointer;
+    }
+    .btn-search:hover { background: #222; }
+
+    /* ===== BREADCRUMB ===== */
+    .breadcrumb-section { background: #fff; padding: 10px 0; border-bottom: 1px solid #eee; }
+    .breadcrumb-section a { color: #888; font-size: 12px; text-decoration: none; }
+    .breadcrumb-section a:hover { color: #c00; }
+    .breadcrumb-section span { color: #888; font-size: 12px; margin: 0 5px; }
+
+    /* ===== PAGE CONTENT ===== */
+    .page-content { background: #f0f0f0; padding: 25px 0 50px; }
+    .page-title { font-size: 24px; font-weight: 700; color: #222; margin-bottom: 18px; }
+
+    /* ===== PAYMENT CARD ===== */
+    .payment-card {
+      background: #e8e8e8;
+      border: 1px solid #d5d5d5;
+      padding: 20px 25px 25px;
+      border-radius: 2px;
+    }
+    .payment-card .card-header-title {
+      font-size: 14px; font-weight: 700; color: #333;
+      margin-bottom: 18px; padding-bottom: 8px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    /* ===== STEP HEADERS ===== */
+    .step-label {
+      font-size: 18px; font-weight: 700; color: #c00;
+      display: inline; margin-right: 6px;
+    }
+    .step-title {
+      font-size: 16px; font-weight: 600; color: #333;
+      display: inline;
+    }
+    .step-header { margin-bottom: 15px; padding-bottom: 8px; border-bottom: 1px solid #ccc; }
+
+    /* ===== FORM FIELDS ===== */
+    .f-row {
+      display: flex; align-items: center;
+      margin-bottom: 8px;
+    }
+    .f-row label {
+      width: 105px; font-size: 12px; color: #444;
+      text-align: right; padding-right: 8px; flex-shrink: 0;
+    }
+    .f-row label .req { color: #c00; margin-left: 2px; }
+    .f-row input, .f-row select {
+      flex: 1; border: 1px solid #bbb; border-radius: 2px;
+      height: 26px; padding: 2px 7px; font-size: 12px;
+      background: #fff; color: #333; outline: none;
+    }
+    .f-row input:focus, .f-row select:focus { border-color: #888; }
+    .f-row input.error-field { border-color: #c00 !important; background: #fff5f5; }
+    .field-error { font-size: 11px; color: #c00; margin-left: 5px; display: none; }
+
+    /* City dropdown style */
+    .f-row select { color: #999; }
+
+    /* ===== SHIP TO DIFFERENT ADDRESS ===== */
+    .ship-toggle {
+      font-size: 12px; color: #3a7abf; cursor: pointer;
+      margin: 10px 0 15px 105px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .ship-toggle input[type="checkbox"] { cursor: pointer; }
+    .ship-toggle a { color: #3a7abf; text-decoration: none; }
+    .ship-toggle a:hover { text-decoration: underline; }
+
+    /* ===== SHIPPING SECTION (hidden by default) ===== */
+    #shippingSection { display: none; margin-top: 10px; }
+
+    /* ===== CARD DETAILS (Step 2) ===== */
+    .card-row {
+      display: flex; align-items: center; margin-bottom: 8px;
+    }
+    .card-row label {
+      width: 115px; font-size: 12px; color: #444;
+      text-align: right; padding-right: 8px; flex-shrink: 0;
+    }
+    .card-row label .req { color: #c00; }
+    .card-row input, .card-row select {
+      flex: 1; border: 1px solid #bbb; border-radius: 2px;
+      height: 26px; padding: 2px 7px; font-size: 12px;
+      background: #fff; color: #666; outline: none;
+    }
+    .card-row input:focus, .card-row select:focus { border-color: #888; }
+    .card-row input.error-field { border-color: #c00 !important; }
+
+    /* Expiry row - month + year dropdowns */
+    .expiry-group { display: flex; gap: 6px; flex: 1; }
+    .expiry-group select { flex: 1; }
+
+    /* Note text */
+    .card-note {
+      font-size: 11px; color: #555; margin: 8px 0 6px 115px; line-height: 1.5;
+    }
+    .terms-check {
+      font-size: 12px; color: #3a7abf; margin-left: 115px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .terms-check a { color: #3a7abf; }
+
+    /* ===== ORDER REVIEW (Step 3) ===== */
+    .order-table { width: 100%; font-size: 12px; margin-top: 10px; }
+    .order-table th {
+      color: #555; font-weight: 600; padding: 4px 8px;
+      border-bottom: 1px solid #ccc; text-align: left;
+    }
+    .order-table td { padding: 6px 8px; color: #333; }
+    .order-table .price-col { color: #c00; font-weight: 600; }
+    .total-row {
+      font-size: 13px; font-weight: 700; color: #333;
+      margin-top: 10px; text-align: right; padding-right: 5px;
+    }
+
+    /* Place Order Button */
+    .btn-place-order {
+      background: #2a8a2a;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 10px 22px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s;
+      float: right;
+      margin-top: 10px;
+    }
+    .btn-place-order:hover { background: #1a6a1a; }
+    .btn-place-order .lock-icon { font-size: 16px; }
+    .btn-place-order .arrow { font-size: 16px; }
+
+    /* ===== CART SUMMARY BAR ===== */
+    .cart-summary-bar {
+      background: #e8e8e8;
+      border-top: 1px solid #ccc;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      border-radius: 0 0 2px 2px;
+    }
+    .cart-summary-bar .summary-text { font-size: 12px; color: #555; text-align: right; }
+    .cart-summary-bar .summary-text strong { color: #333; font-size: 13px; }
+    .btn-continue {
+      background: #fff; border: 1px solid #bbb; color: #555;
+      font-size: 12px; padding: 6px 14px; border-radius: 2px;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .btn-continue:hover { background: #eee; }
+    .btn-checkout {
+      background: #c00; color: #fff; border: none;
+      font-size: 12px; font-weight: 700; padding: 6px 16px;
+      border-radius: 2px; cursor: pointer; transition: background 0.2s;
+    }
+    .btn-checkout:hover { background: #a00; }
+
+    /* ===== SUCCESS MODAL ===== */
+    .success-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5); z-index: 9999;
+      justify-content: center; align-items: center;
+    }
+    .success-box {
+      background: #fff; padding: 40px 50px; border-radius: 6px;
+      text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    .success-box .check { font-size: 48px; color: #2a8a2a; margin-bottom: 12px; }
+    .success-box h4 { color: #222; margin-bottom: 8px; }
+    .success-box p { color: #666; font-size: 13px; }
+
+    /* ===== BRANDS ===== */
+    .brands-section {
+      background: #f9f9f9; border-top: 1px solid #e5e5e5;
+      border-bottom: 1px solid #e5e5e5; padding: 20px 0;
+    }
+    .save-banner {
+      background: #f4c430; color: #333; text-align: center;
+      padding: 10px 15px; border-radius: 3px;
+      font-size: 11px; font-weight: 700; line-height: 1.3;
+    }
+    .save-banner .big { font-size: 18px; color: #c00; }
+
+    /* ===== FOOTER ===== */
+    .site-footer { background: #2b2b2b; color: #aaa; font-size: 12px; padding: 35px 0 15px; }
+    .site-footer h6 { color: #fff; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 15px; }
+    .site-footer a { color: #aaa; text-decoration: none; display: block; margin-bottom: 6px; font-size: 12px; border-bottom: 1px solid #3a3a3a; padding-bottom: 5px; }
+    .site-footer a:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid #3a3a3a; margin-top: 20px; padding-top: 12px; text-align: center; font-size: 11px; color: #777; }
+    .newsletter-input { width: 100%; border: none; height: 30px; padding: 0 8px; font-size: 12px; background: #3a3a3a; color: #ccc; outline: none; margin-bottom: 10px; }
+    .social-icons a { display: inline-block; width: 28px; height: 28px; background: #555; color: #fff; border-radius: 50%; text-align: center; line-height: 28px; font-size: 12px; margin-right: 4px; border: none; }
+    .social-icons a:hover { background: #c00; }
+    .payment-icons span { background: #555; color: #fff; font-size: 10px; padding: 3px 6px; border-radius: 2px; margin-right: 3px; }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>Call for Customer support: <span class="support-phone">020 38989565</span></div>
+        <div>
+          <a href="my-account.html">My Account</a>
+          <a href="#">Wishlist</a>
+          <a href="#">To Checkout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <a href="index.html" style="text-decoration:none;">
+          <div class="logo-text">HOTSPRING<sup style="font-size:10px;">®</sup>
+            <span>Portable Spas</span>
+          </div>
+        </a>
+        <div class="cart-btn">
+          <span class="cart-icon">🛒</span>
+          My Cart: &nbsp; 0 Items (s) <span>▼</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- RED NAVBAR -->
+  <div class="red-nav">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between">
+        <ul class="nav mb-0">
+          <li class="nav-item"><a class="nav-link" href="category.html">CATAGORY</a></li>
+          <span class="nav-divider">|</span>
+          <li class="nav-item"><a class="nav-link" href="#">BRAND</a></li>
+          <span class="nav-divider">|</span>
+          <li class="nav-item"><a class="nav-link" href="#">INFO</a></li>
+        </ul>
+        <div class="d-flex" style="gap:0;">
+          <input type="text" class="form-control" placeholder="Search" style="width:280px; border-radius:0; height:34px; font-size:13px;">
+          <button class="btn-search">SEARCH</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb-section">
+    <div class="container">
+      <a href="index.html">Home</a>
+      <span>›</span>
+      <span style="color:#555; font-size:12px;">Payments</span>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="page-content">
+    <div class="container">
+      <h2 class="page-title">Secure Checkouts</h2>
+
+      <div class="payment-card">
+        <div class="card-header-title">Payment Information</div>
+
+        <form id="checkoutForm" novalidate>
+          <div class="row g-4">
+
+            <!-- ===== LEFT COLUMN: Step 1 + Step 3 ===== -->
+            <div class="col-lg-6">
+
+              <!-- STEP 1: Billing Address -->
+              <div class="step-header">
+                <span class="step-label">Step 1.</span>
+                <span class="step-title">Billing Address</span>
+              </div>
+
+              <!-- First Name -->
+              <div class="f-row">
+                <label>First Name <span class="req">*</span></label>
+                <input type="text" id="b_firstName">
+                <span class="field-error" id="err-b_firstName">Required</span>
+              </div>
+              <!-- Last Name -->
+              <div class="f-row">
+                <label>Last Name <span class="req">*</span></label>
+                <input type="text" id="b_lastName">
+                <span class="field-error" id="err-b_lastName">Required</span>
+              </div>
+              <!-- Email -->
+              <div class="f-row">
+                <label>Email <span class="req">*</span></label>
+                <input type="email" id="b_email">
+                <span class="field-error" id="err-b_email">Valid email required</span>
+              </div>
+              <!-- Phone -->
+              <div class="f-row">
+                <label>Phone <span class="req">*</span></label>
+                <input type="tel" id="b_phone">
+                <span class="field-error" id="err-b_phone">Required</span>
+              </div>
+              <!-- Address -->
+              <div class="f-row">
+                <label>Address <span class="req">*</span></label>
+                <input type="text" id="b_address">
+                <span class="field-error" id="err-b_address">Required</span>
+              </div>
+              <!-- City -->
+              <div class="f-row">
+                <label>City <span class="req">*</span></label>
+                <select id="b_city">
+                  <option value="">New York</option>
+                  <option>New York</option>
+                  <option>Los Angeles</option>
+                  <option>Chicago</option>
+                  <option>Houston</option>
+                  <option>Phoenix</option>
+                </select>
+              </div>
+              <!-- State -->
+              <div class="f-row">
+                <label>State <span class="req">*</span></label>
+                <input type="text" id="b_state" placeholder="New York">
+              </div>
+              <!-- Zip Code -->
+              <div class="f-row">
+                <label>Zip Code <span class="req">*</span></label>
+                <input type="text" id="b_zip">
+                <span class="field-error" id="err-b_zip">Required</span>
+              </div>
+              <!-- Country -->
+              <div class="f-row">
+                <label>Country <span class="req">*</span></label>
+                <select id="b_country">
+                  <option value="">United States</option>
+                  <option>United States</option>
+                  <option>Canada</option>
+                  <option>United Kingdom</option>
+                  <option>Australia</option>
+                  <option>Pakistan</option>
+                </select>
+              </div>
+
+              <!-- Ship to different address toggle -->
+              <div class="ship-toggle">
+                <input type="checkbox" id="shipToggle">
+                <a href="#" id="shipToggleLabel">Ship to a different address</a>
+              </div>
+
+              <!-- SHIPPING SECTION (hidden by default) -->
+              <div id="shippingSection">
+                <div class="f-row">
+                  <label>First Name <span class="req">*</span></label>
+                  <input type="text" id="s_firstName">
+                </div>
+                <div class="f-row">
+                  <label>Last Name <span class="req">*</span></label>
+                  <input type="text" id="s_lastName">
+                </div>
+                <div class="f-row">
+                  <label>Email <span class="req">*</span></label>
+                  <input type="email" id="s_email">
+                </div>
+                <div class="f-row">
+                  <label>Phone <span class="req">*</span></label>
+                  <input type="tel" id="s_phone">
+                </div>
+                <div class="f-row">
+                  <label>Address <span class="req">*</span></label>
+                  <input type="text" id="s_address">
+                </div>
+                <div class="f-row">
+                  <label>City <span class="req">*</span></label>
+                  <select id="s_city">
+                    <option value="">New York</option>
+                    <option>New York</option>
+                    <option>Los Angeles</option>
+                    <option>Chicago</option>
+                  </select>
+                </div>
+                <div class="f-row">
+                  <label>State <span class="req">*</span></label>
+                  <input type="text" id="s_state" placeholder="New York">
+                </div>
+                <div class="f-row">
+                  <label>Zip Code <span class="req">*</span></label>
+                  <input type="text" id="s_zip">
+                </div>
+                <div class="f-row">
+                  <label>Country <span class="req">*</span></label>
+                  <select id="s_country">
+                    <option value="">United States</option>
+                    <option>United States</option>
+                    <option>Canada</option>
+                    <option>United Kingdom</option>
+                  </select>
+                </div>
+              </div>
+
+            </div><!-- /left col -->
+
+            <!-- ===== RIGHT COLUMN: Step 2 + Step 3 ===== -->
+            <div class="col-lg-6">
+
+              <!-- STEP 2: Card Details -->
+              <div class="step-header">
+                <span class="step-label">Step 2.</span>
+                <span class="step-title">Card Details</span>
+              </div>
+
+              <!-- Card Type -->
+              <div class="card-row">
+                <label>Card Type <span class="req">*</span></label>
+                <input type="text" id="cardType" placeholder="Master Card">
+                <span class="field-error" id="err-cardType">Required</span>
+              </div>
+              <!-- Card Number -->
+              <div class="card-row">
+                <label>Card Number <span class="req">*</span></label>
+                <input type="text" id="cardNumber" placeholder="1234 5678 0123 4567" maxlength="19">
+                <span class="field-error" id="err-cardNumber">16 digits required</span>
+              </div>
+              <!-- Expiration -->
+              <div class="card-row">
+                <label>Expiration <span class="req">*</span></label>
+                <div class="expiry-group">
+                  <select id="expMonth">
+                    <option>01</option><option>02</option><option>03</option>
+                    <option>04</option><option>05</option><option>06</option>
+                    <option>07</option><option>08</option><option>09</option>
+                    <option>10</option><option>11</option><option>12</option>
+                  </select>
+                  <select id="expMonth2">
+                    <option>December</option><option>January</option><option>February</option>
+                    <option>March</option><option>April</option><option>May</option>
+                    <option>June</option><option>July</option><option>August</option>
+                    <option>September</option><option>October</option><option>November</option>
+                  </select>
+                  <select id="expYear">
+                    <option>2019</option><option>2020</option><option>2021</option>
+                    <option>2022</option><option>2023</option><option>2024</option>
+                    <option>2025</option><option>2026</option><option>2027</option>
+                    <option>2028</option><option>2029</option><option>2030</option>
+                  </select>
+                </div>
+              </div>
+              <!-- Secure Code -->
+              <div class="card-row">
+                <label>Secure Code <span class="req">*</span></label>
+                <input type="password" id="secureCode" maxlength="4">
+                <span class="field-error" id="err-secureCode">3-4 digits required</span>
+              </div>
+
+              <p class="card-note">
+                Note: Please ensure the billing address you enter<br>
+                matches your credit card billing address.
+              </p>
+              <div class="terms-check">
+                <input type="checkbox" id="termsCheck">
+                <a href="#">I Accept terms and Conditions</a>
+              </div>
+
+              <!-- STEP 3: Review Your Order -->
+              <div class="step-header mt-4">
+                <span class="step-label">Step 3.</span>
+                <span class="step-title">Review Your Order</span>
+              </div>
+
+              <table class="order-table">
+                <thead>
+                  <tr>
+                    <th>Item name</th>
+                    <th>price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>XS SCYVA X SERUES 119</td>
+                    <td class="price-col">$ 699</td>
+                    <td>1000</td>
+                    <td>12000</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="total-row">
+                Total with shipping: &nbsp; <span style="color:#333;">$ 699.00</span>
+              </div>
+
+              <div style="text-align:right; margin-top:15px;">
+                <button type="submit" class="btn-place-order" id="placeOrderBtn">
+                  <span class="lock-icon">🔒</span>
+                  Place Your Order
+                  <span class="arrow">▶</span>
+                </button>
+              </div>
+
+            </div><!-- /right col -->
+          </div><!-- /row -->
+        </form>
+
+        <!-- CART SUMMARY BAR -->
+        <div class="cart-summary-bar">
+          <button class="btn-continue" onclick="window.location.href='category.html'">Continue shopping</button>
+          <div class="d-flex align-items-center gap-3">
+            <div class="summary-text">
+              Cart summary (2 items)<br>
+              Total: <strong>$21.00</strong>
+            </div>
+            <button class="btn-checkout">Proceed to checkout</button>
+          </div>
+        </div>
+
+      </div><!-- /payment-card -->
+    </div>
+  </div>
+
+  <!-- SUCCESS OVERLAY -->
+  <div class="success-overlay" id="successOverlay">
+    <div class="success-box">
+      <div class="check">✅</div>
+      <h4>Order Placed Successfully!</h4>
+      <p>Thank you for your purchase.<br>You will receive a confirmation email shortly.</p>
+      <button class="btn-red mt-3" onclick="window.location.href='index.html'" style="background:#2a8a2a; color:#fff; border:none; padding:8px 24px; border-radius:3px; cursor:pointer; font-weight:700;">
+        Back to Home
+      </button>
+    </div>
+  </div>
+
+  <!-- BRANDS SECTION -->
+  <div class="brands-section">
+    <div class="container">
+      <div class="row align-items-center justify-content-center g-4">
+        <div class="col-auto">
+          <div class="save-banner">
+            <div class="big">SAVE $1,000'S</div>
+            ON THE TOP SPA BRANDS<br>
+            <small>HUGE DISCOUNTS &nbsp; SHOP EARLY FOR THE BEST SELECTION!</small>
+          </div>
+        </div>
+        <div class="col-auto text-center">
+          <div style="font-size:22px; color:#3a7abf; font-weight:700; font-style:italic;">🌊 <span style="color:#3a7abf;">OCEANIC</span><span style="color:#5a9ad5;">Spa</span></div>
+        </div>
+        <div class="col-auto text-center">
+          <div style="font-size:20px; font-weight:700; color:#c05;">🌸 Caldera<span style="color:#888;">Spas</span></div>
+        </div>
+        <div class="col-auto text-center">
+          <div style="font-size:20px; font-weight:700; color:#2a7a2a;">
+            🌴 Island<span style="font-weight:400;">Spas</span>
+            <div style="font-size:10px; color:#888; letter-spacing:2px;">BY ARTESIAN</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-3 col-md-6">
+          <h6>Contact Us</h6>
+          <p style="margin-bottom:5px;">yoursitename.com</p>
+          <p style="color:#fff; margin-bottom:5px;">CALL 24/7: 888 - 201 - 8899</p>
+          <p style="margin-bottom:3px;">Your Address: Street</p>
+          <p style="margin-bottom:3px;">State & Zip Code</p>
+          <p style="margin-bottom:10px;">City & Country</p>
+          <p style="margin-bottom:15px;">Email: servicemail@yoursitename.com</p>
+          <div class="social-icons">
+            <a href="#">T</a><a href="#">f</a><a href="#">in</a>
+            <a href="#">g+</a><a href="#">▶</a><a href="#">P</a>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <h6>Information</h6>
+          <a href="about.html">ABOUT US</a>
+          <a href="#">CUSTOMER SERVICE</a>
+          <a href="#">PRIVACY POLICY</a>
+          <a href="#">SITE MAP</a>
+          <a href="#">SEARCH TERMS</a>
+          <a href="contact.html">CONATACT US</a>
+          <a href="about.html">ABOUT US</a>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <h6>My Account</h6>
+          <a href="login.html">SIGN IN</a>
+          <a href="#">VIEW CART</a>
+          <a href="#">MY WISHLIST</a>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <h6>Signup for a News Letter</h6>
+          <p style="margin-bottom:8px;">SIGN UP FOR OUR NEWS LETTER:</p>
+          <input type="email" class="newsletter-input" placeholder="">
+          <div class="payment-icons">
+            <p style="color:#888; margin-bottom:5px;">PAYMENT SOLUTIONS</p>
+            <span>VISA</span><span>MC</span><span>AMEX</span><span>DISC</span><span>PP</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2014 Hottubspaservice.com. All Rights Reserved.</div>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+    $(document).ready(function () {
+
+      /* ===== Ship to different address toggle ===== */
+      $('#shipToggle, #shipToggleLabel').on('click', function (e) {
+        if ($(this).is('a')) e.preventDefault();
+        $('#shipToggle').prop('checked', !$('#shipToggle').prop('checked'));
+        if ($('#shipToggle').prop('checked')) {
+          $('#shippingSection').slideDown(300);
+        } else {
+          $('#shippingSection').slideUp(300);
+        }
+      });
+      $('#shipToggle').on('change', function () {
+        if ($(this).prop('checked')) {
+          $('#shippingSection').slideDown(300);
+        } else {
+          $('#shippingSection').slideUp(300);
+        }
+      });
+
+      /* ===== Card number auto-format ===== */
+      $('#cardNumber').on('input', function () {
+        var val = $(this).val().replace(/\D/g, '').substring(0, 16);
+        val = val.replace(/(.{4})/g, '$1 ').trim();
+        $(this).val(val);
+      });
+
+      /* ===== Validation helper ===== */
+      function validate(id, errId, type) {
+        var val = $('#' + id).val().trim();
+        var ok = true;
+        if (type === 'email') {
+          ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+        } else if (type === 'card') {
+          ok = val.replace(/\s/g, '').length === 16;
+        } else if (type === 'cvv') {
+          ok = /^\d{3,4}$/.test(val);
+        } else {
+          ok = val.length > 0;
+        }
+        if (!ok) {
+          $('#' + id).addClass('error-field');
+          $('#' + errId).fadeIn(200);
+        } else {
+          $('#' + id).removeClass('error-field');
+          $('#' + errId).fadeOut(200);
+        }
+        return ok;
+      }
+
+      /* ===== Real-time blur validation ===== */
+      $('#b_firstName').blur(function(){ validate('b_firstName','err-b_firstName','text'); });
+      $('#b_lastName').blur(function(){  validate('b_lastName', 'err-b_lastName', 'text'); });
+      $('#b_email').blur(function(){     validate('b_email',    'err-b_email',    'email'); });
+      $('#b_phone').blur(function(){     validate('b_phone',    'err-b_phone',    'text'); });
+      $('#b_address').blur(function(){   validate('b_address',  'err-b_address',  'text'); });
+      $('#b_zip').blur(function(){       validate('b_zip',      'err-b_zip',      'text'); });
+      $('#cardType').blur(function(){    validate('cardType',   'err-cardType',   'text'); });
+      $('#cardNumber').blur(function(){  validate('cardNumber', 'err-cardNumber', 'card'); });
+      $('#secureCode').blur(function(){  validate('secureCode', 'err-secureCode', 'cvv'); });
+
+      $('input').on('focus', function () { $(this).removeClass('error-field'); });
+
+      /* ===== Form Submit ===== */
+      $('#checkoutForm').on('submit', function (e) {
+        e.preventDefault();
+
+        var v1  = validate('b_firstName', 'err-b_firstName', 'text');
+        var v2  = validate('b_lastName',  'err-b_lastName',  'text');
+        var v3  = validate('b_email',     'err-b_email',     'email');
+        var v4  = validate('b_phone',     'err-b_phone',     'text');
+        var v5  = validate('b_address',   'err-b_address',   'text');
+        var v6  = validate('b_zip',       'err-b_zip',       'text');
+        var v7  = validate('cardType',    'err-cardType',    'text');
+        var v8  = validate('cardNumber',  'err-cardNumber',  'card');
+        var v9  = validate('secureCode',  'err-secureCode',  'cvv');
+        var v10 = $('#termsCheck').prop('checked');
+
+        if (!v10) {
+          alert('Please accept the Terms and Conditions to proceed.');
+          return;
+        }
+
+        if (v1 && v2 && v3 && v4 && v5 && v6 && v7 && v8 && v9 && v10) {
+          $('#placeOrderBtn').prop('disabled', true).html('🔒 Processing...');
+          setTimeout(function () {
+            $('#successOverlay').css('display', 'flex').hide().fadeIn(400);
+            $('#placeOrderBtn').prop('disabled', false).html('🔒 Place Your Order ▶');
+          }, 1000);
+        } else {
+          // Shake all invalid fields
+          $('.error-field').each(function () {
+            var el = $(this);
+            el.animate({ marginLeft: '+=8px' }, 60)
+              .animate({ marginLeft: '-=16px' }, 60)
+              .animate({ marginLeft: '+=16px' }, 60)
+              .animate({ marginLeft: '-=8px' }, 60);
+          });
+        }
+      });
+
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart - HotSpring Portable Spas</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ===== TOP BAR ===== */
+    .top-bar { background:#f5f5f5; border-bottom:1px solid #ddd; font-size:12px; padding:6px 0; }
+    .top-bar a { color:#555; text-decoration:none; margin-left:15px; }
+    .top-bar a:hover { color:#c00; }
+    .top-bar .support-phone { color:#e00; font-weight:bold; }
+
+    /* ===== HEADER ===== */
+    .site-header { padding:15px 0; border-bottom:1px solid #eee; background:#fff; }
+    .logo-text { font-size:32px; font-weight:900; color:#222; letter-spacing:-1px; line-height:1; font-family:'Arial Black',sans-serif; }
+    .logo-text span { color:#e05c1a; font-size:14px; font-weight:400; display:block; letter-spacing:2px; }
+    .cart-btn { background:#fff; border:1px solid #ccc; border-radius:3px; padding:6px 14px; font-size:13px; color:#444; display:flex; align-items:center; gap:8px; cursor:pointer; }
+    .cart-icon { color:#c00; font-size:18px; }
+
+    /* ===== RED NAVBAR ===== */
+    .red-nav { background:#c00; padding:0; }
+    .red-nav .nav-link { color:#fff !important; font-size:13px; font-weight:600; letter-spacing:1px; padding:10px 18px !important; text-transform:uppercase; border-right:1px solid rgba(255,255,255,0.2); }
+    .red-nav .nav-link:hover { background:rgba(0,0,0,0.15); }
+    .nav-divider { color:rgba(255,255,255,0.5); padding:10px 5px; }
+    .btn-search { background:#444; color:#fff; border:none; border-radius:0; font-size:12px; font-weight:700; letter-spacing:1px; padding:0 20px; height:34px; text-transform:uppercase; cursor:pointer; }
+    .btn-search:hover { background:#222; }
+
+    /* ===== BREADCRUMB ===== */
+    .breadcrumb-section { background:#fff; padding:10px 0; border-bottom:1px solid #eee; }
+    .breadcrumb-section a { color:#888; font-size:12px; text-decoration:none; }
+    .breadcrumb-section a:hover { color:#c00; }
+    .breadcrumb-section span { color:#888; font-size:12px; margin:0 5px; }
+
+    /* ===== PAGE CONTENT ===== */
+    .page-content { background:#f0f0f0; min-height:400px; padding:25px 0 40px; }
+    .page-title { font-size:24px; font-weight:700; color:#222; margin-bottom:18px; }
+
+    /* ===== CART CARD ===== */
+    .cart-card { background:#e8e8e8; border:1px solid #d5d5d5; padding:18px 20px 20px; border-radius:2px; }
+    .cart-card-title { font-size:14px; font-weight:700; color:#333; margin-bottom:12px; }
+
+    /* ===== SUCCESS ALERT ===== */
+    .cart-alert {
+      background:#e8f5e9; border:1px solid #a5d6a7;
+      padding:8px 14px; font-size:12px; color:#2a7a2a;
+      display:flex; align-items:center; gap:8px;
+      margin-bottom:12px; border-radius:2px;
+    }
+    .cart-alert .check-icon { color:#2a7a2a; font-size:14px; }
+    .cart-alert a { color:#3a7abf; text-decoration:none; }
+    .cart-alert a:hover { text-decoration:underline; }
+
+    /* ===== ITEMS HEADER ===== */
+    .cart-header-row {
+      display:flex; justify-content:space-between;
+      font-size:12px; color:#555; font-weight:600;
+      border-bottom:1px solid #ccc; padding-bottom:6px; margin-bottom:10px;
+    }
+    .cart-header-row .items-added { color:#555; }
+    .cart-header-row .items-added a { color:#3a7abf; text-decoration:none; }
+    .cart-header-row .items-added a:hover { text-decoration:underline; }
+
+    /* ===== CART ITEM ROW ===== */
+    .cart-item {
+      background:#fff; border:1px solid #ddd;
+      padding:12px 15px; margin-bottom:10px;
+      border-radius:2px; position:relative;
+      opacity:0; transform:translateY(10px);
+      transition:opacity 0.4s, transform 0.4s;
+    }
+    .cart-item.visible { opacity:1; transform:translateY(0); }
+
+    .cart-item-img {
+      width:80px; height:70px; object-fit:contain;
+      border:1px solid #ddd; background:#f9f9f9;
+      display:flex; align-items:center; justify-content:center;
+      font-size:28px; flex-shrink:0;
+    }
+    .cart-item-name {
+      font-size:13px; font-weight:600; color:#3a7abf;
+      text-decoration:none; cursor:pointer;
+      display:block; margin-bottom:5px; line-height:1.4;
+    }
+    .cart-item-name:hover { text-decoration:underline; }
+    .cart-item-desc { font-size:11px; color:#666; line-height:1.5; }
+
+    .cart-item-qty { font-size:12px; color:#444; }
+    .cart-item-qty select {
+      border:1px solid #bbb; border-radius:2px;
+      font-size:12px; padding:2px 4px; margin-left:5px;
+      background:#fff; cursor:pointer;
+    }
+    .cart-item-shipping { font-size:11px; color:#555; margin-top:4px; }
+    .cart-item-price { font-size:15px; font-weight:700; color:#333; }
+
+    .cart-item-actions {
+      font-size:11px; margin-top:8px;
+      border-top:1px solid #eee; padding-top:7px;
+      text-align:right;
+    }
+    .cart-item-actions a {
+      color:#3a7abf; text-decoration:none; cursor:pointer;
+      margin-left:10px;
+    }
+    .cart-item-actions a:hover { text-decoration:underline; }
+    .cart-item-actions .remove-link { color:#c00; }
+
+    /* ===== CART SUMMARY ===== */
+    .cart-summary {
+      text-align:right; margin-top:15px;
+      font-size:13px; color:#333; margin-bottom:12px;
+    }
+    .cart-summary .total-label { font-weight:400; color:#555; }
+    .cart-summary .total-amount { font-size:16px; font-weight:700; color:#333; }
+
+    .cart-actions { display:flex; justify-content:flex-end; gap:10px; margin-top:5px; }
+    .btn-continue-shop {
+      background:#fff; border:1px solid #3a7abf;
+      color:#3a7abf; font-size:12px; font-weight:600;
+      padding:7px 16px; border-radius:2px; cursor:pointer;
+      text-transform:uppercase; letter-spacing:0.5px;
+      transition:background 0.2s, color 0.2s;
+    }
+    .btn-continue-shop:hover { background:#3a7abf; color:#fff; }
+    .btn-proceed {
+      background:#c00; color:#fff; border:none;
+      font-size:12px; font-weight:700; padding:7px 18px;
+      border-radius:2px; cursor:pointer;
+      text-transform:uppercase; letter-spacing:0.5px;
+      transition:background 0.2s;
+    }
+    .btn-proceed:hover { background:#a00; }
+
+    /* ===== ALSO VIEWED ===== */
+    .also-viewed { margin-top:25px; }
+    .also-viewed h6 { font-size:14px; font-weight:700; color:#333; margin-bottom:14px; }
+
+    .also-carousel { position:relative; }
+    .also-carousel .arrow-btn {
+      position:absolute; top:50%; transform:translateY(-50%);
+      background:#ddd; border:1px solid #bbb; width:26px; height:26px;
+      border-radius:50%; cursor:pointer; font-size:13px; color:#444;
+      display:flex; align-items:center; justify-content:center;
+      z-index:2; transition:background 0.2s;
+    }
+    .also-carousel .arrow-btn:hover { background:#c00; color:#fff; border-color:#c00; }
+    .also-carousel .arrow-left { left:-14px; }
+    .also-carousel .arrow-right { right:-14px; }
+
+    .also-item {
+      text-align:center; cursor:pointer;
+      transition:transform 0.2s;
+    }
+    .also-item:hover { transform:translateY(-3px); }
+    .also-item-img {
+      width:100%; height:80px; background:#e0e0e0;
+      border:1px solid #ccc; display:flex;
+      align-items:center; justify-content:center;
+      font-size:28px; margin-bottom:8px; border-radius:2px;
+    }
+    .also-item-price { font-size:13px; font-weight:700; color:#c00; margin-bottom:3px; }
+    .also-item-name { font-size:11px; color:#333; line-height:1.3; margin-bottom:2px; }
+    .also-item-code { font-size:10px; color:#888; }
+
+    /* ===== BRANDS ===== */
+    .brands-section { background:#f9f9f9; border-top:1px solid #e5e5e5; border-bottom:1px solid #e5e5e5; padding:20px 0; }
+    .save-banner { background:#f4c430; color:#333; text-align:center; padding:10px 15px; border-radius:3px; font-size:11px; font-weight:700; line-height:1.3; }
+    .save-banner .big { font-size:18px; color:#c00; }
+
+    /* ===== FOOTER ===== */
+    .site-footer { background:#2b2b2b; color:#aaa; font-size:12px; padding:35px 0 15px; }
+    .site-footer h6 { color:#fff; font-size:13px; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:15px; }
+    .site-footer a { color:#aaa; text-decoration:none; display:block; margin-bottom:6px; font-size:12px; border-bottom:1px solid #3a3a3a; padding-bottom:5px; }
+    .site-footer a:hover { color:#fff; }
+    .footer-bottom { border-top:1px solid #3a3a3a; margin-top:20px; padding-top:12px; text-align:center; font-size:11px; color:#777; }
+    .newsletter-input { width:100%; border:none; height:30px; padding:0 8px; font-size:12px; background:#3a3a3a; color:#ccc; outline:none; margin-bottom:10px; }
+    .social-icons a { display:inline-block; width:28px; height:28px; background:#555; color:#fff; border-radius:50%; text-align:center; line-height:28px; font-size:12px; margin-right:4px; border:none; }
+    .social-icons a:hover { background:#c00; }
+    .payment-icons span { background:#555; color:#fff; font-size:10px; padding:3px 6px; border-radius:2px; margin-right:3px; }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>Call for Customer support: <span class="support-phone">020 38989565</span></div>
+        <div>
+          <a href="my-account.html">My Account</a>
+          <a href="#">Wishlist</a>
+          <a href="shopping-cart.html">To Checkout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <a href="index.html" style="text-decoration:none;">
+          <div class="logo-text">HOTSPRING<sup style="font-size:10px;">®</sup>
+            <span>Portable Spas</span>
+          </div>
+        </a>
+        <div class="cart-btn">
+          <span class="cart-icon">🛒</span>
+          My Cart: &nbsp; <span id="cartCountDisplay">2</span> Items (s) <span>▼</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- RED NAVBAR -->
+  <div class="red-nav">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between">
+        <ul class="nav mb-0">
+          <li class="nav-item"><a class="nav-link" href="category.html">CATAGORY</a></li>
+          <span class="nav-divider">|</span>
+          <li class="nav-item"><a class="nav-link" href="#">BRAND</a></li>
+          <span class="nav-divider">|</span>
+          <li class="nav-item"><a class="nav-link" href="#">INFO</a></li>
+        </ul>
+        <div class="d-flex" style="gap:0;">
+          <input type="text" class="form-control" placeholder="Search" style="width:280px; border-radius:0; height:34px; font-size:13px;">
+          <button class="btn-search">SEARCH</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb-section">
+    <div class="container">
+      <a href="index.html">Home</a>
+      <span>›</span>
+      <span style="color:#555; font-size:12px;">Shopping Cart</span>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="page-content">
+    <div class="container">
+      <h2 class="page-title">Shopping Cart</h2>
+
+      <div class="cart-card">
+        <div class="cart-card-title">Your Shopping Cart</div>
+
+        <!-- SUCCESS ALERT -->
+        <div class="cart-alert" id="cartAlert">
+          <span class="check-icon">✔</span>
+          <span>
+            <a href="product-detail.html">The Cabaret 3 Person 41 Jet Hot Tub-110 Volt Plug in</a>
+            &nbsp; was just added cart.
+          </span>
+        </div>
+
+        <!-- ITEMS HEADER -->
+        <div class="cart-header-row">
+          <div class="items-added">
+            Items added: <a href="my-account.html">user_name</a>
+          </div>
+          <div>Items total</div>
+        </div>
+
+        <!-- CART ITEMS LIST -->
+        <div id="cartItemsList">
+
+          <!-- Item 1 -->
+          <div class="cart-item" id="item-1">
+            <div class="d-flex gap-3">
+              <div class="cart-item-img">🛁</div>
+              <div class="flex-grow-1">
+                <a class="cart-item-name" href="product-detail.html">
+                  The Cabaret 3 Person 41 Jet Hot Tub-110 Volt Plug in or 220 Volt Version
+                </a>
+                <div class="cart-item-desc">
+                  220 V/50 AMP — 4.5KW Heater 110 V/15 AMP — 1KW Heater!<br>
+                  convertible To 220 V / 4KW Heater
+                </div>
+              </div>
+              <div style="text-align:right; flex-shrink:0; min-width:140px;">
+                <div class="cart-item-qty">
+                  Quantity:
+                  <select class="qty-select" data-item="1" onchange="updateTotal()">
+                    <option value="1">1</option>
+                    <option value="5">5</option>
+                    <option value="10" selected>10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                  </select>
+                </div>
+                <div class="cart-item-shipping mt-1">Standard (7 - 10 business days)</div>
+                <div class="cart-item-price mt-2">$9.00</div>
+              </div>
+            </div>
+            <div class="cart-item-actions">
+              <a class="remove-link" onclick="removeItem(1)">Remove</a>
+              <span style="color:#bbb;">|</span>
+              <a href="product-detail.html">Edit Your Order</a>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="cart-item" id="item-2">
+            <div class="d-flex gap-3">
+              <div class="cart-item-img">🛁</div>
+              <div class="flex-grow-1">
+                <a class="cart-item-name" href="product-detail.html">
+                  The Cabaret 3 Person 41 Jet Hot Tub-110 Volt Plug in or 220 Volt Version
+                </a>
+                <div class="cart-item-desc">
+                  220 V/50 AMP — 4.5KW Heater 110 V/15 AMP — 1KW Heater!<br>
+                  convertible To 220 V / 4KW Heater
+                </div>
+              </div>
+              <div style="text-align:right; flex-shrink:0; min-width:140px;">
+                <div class="cart-item-qty">
+                  Quantity:
+                  <select class="qty-select" data-item="2" onchange="updateTotal()">
+                    <option value="1">1</option>
+                    <option value="5">5</option>
+                    <option value="10" selected>10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                  </select>
+                </div>
+                <div class="cart-item-shipping mt-1">Standard (7 - 10 business days)</div>
+                <div class="cart-item-price mt-2">$9.00</div>
+              </div>
+            </div>
+            <div class="cart-item-actions">
+              <a class="remove-link" onclick="removeItem(2)">Remove</a>
+              <span style="color:#bbb;">|</span>
+              <a href="product-detail.html">Edit Your Order</a>
+            </div>
+          </div>
+
+        </div><!-- /cartItemsList -->
+
+        <!-- Empty cart message (hidden by default) -->
+        <div id="emptyCartMsg" style="display:none; text-align:center; padding:30px; color:#888; font-size:14px;">
+          🛒 Your cart is empty. <a href="category.html" style="color:#3a7abf;">Continue Shopping</a>
+        </div>
+
+        <!-- CART SUMMARY -->
+        <div class="cart-summary" id="cartSummary">
+          <span class="total-label">Cart summary (<span id="itemCount">2</span> items)</span><br>
+          <span class="total-label">Total: </span>
+          <span class="total-amount" id="cartTotal">$21.00</span>
+        </div>
+
+        <div class="cart-actions">
+          <button class="btn-continue-shop" onclick="window.location.href='category.html'">CONTINUE SHOPPING</button>
+          <button class="btn-proceed" onclick="window.location.href='checkout.html'">PROCEED TO CHECKOUT</button>
+        </div>
+
+        <!-- CUSTOMERS WHO VIEWED THIS ITEM -->
+        <div class="also-viewed mt-4">
+          <h6>Customers Who Viewed This Item Also</h6>
+          <div class="also-carousel position-relative px-4">
+            <button class="arrow-btn arrow-left" id="prevBtn">&#8249;</button>
+            <div class="row g-3" id="alsoViewedRow">
+              <div class="col-3">
+                <div class="also-item">
+                  <div class="also-item-img">🧊</div>
+                  <div class="also-item-price">$2,549.15</div>
+                  <div class="also-item-name">Bosch 22 Cu. Ft Stainless Refrigerator</div>
+                  <div class="also-item-code">B22CS30SNS/S</div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="also-item">
+                  <div class="also-item-img">🧊</div>
+                  <div class="also-item-price">$2,549.15</div>
+                  <div class="also-item-name">Bosch 22 Cu. Ft Stainless Refrigerator</div>
+                  <div class="also-item-code">B22CS30SNS/S</div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="also-item">
+                  <div class="also-item-img">🧊</div>
+                  <div class="also-item-price">$2,549.15</div>
+                  <div class="also-item-name">Bosch 22 Cu. Ft Stainless Refrigerator</div>
+                  <div class="also-item-code">B22CS30SNS/S</div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="also-item">
+                  <div class="also-item-img">🧊</div>
+                  <div class="also-item-price">$2,549.15</div>
+                  <div class="also-item-name">Bosch 22 Cu. Ft Stainless Refrigerator</div>
+                  <div class="also-item-code">B22CS30SNS/S</div>
+                </div>
+              </div>
+            </div>
+            <button class="arrow-btn arrow-right" id="nextBtn">&#8250;</button>
+          </div>
+        </div>
+
+      </div><!-- /cart-card -->
+    </div>
+  </div>
+
+  <!-- BRANDS SECTION -->
+  <div class="brands-section">
+    <div class="container">
+      <div class="row align-items-center justify-content-center g-4">
+        <div class="col-auto">
+          <div class="save-banner">
+            <div class="big">SAVE $1,000'S</div>
+            ON THE TOP SPA BRANDS<br>
+            <small>HUGE DISCOUNTS &nbsp; SHOP EARLY FOR THE BEST SELECTION!</small>
+          </div>
+        </div>
+        <div class="col-auto text-center">
+          <div style="font-size:22px;color:#3a7abf;font-weight:700;font-style:italic;">🌊 <span style="color:#3a7abf;">OCEANIC</span><span style="color:#5a9ad5;">Spa</span></div>
+        </div>
+        <div class="col-auto text-center">
+          <div style="font-size:20px;font-weight:700;color:#c05;">🌸 Caldera<span style="color:#888;">Spas</span></div>
+        </div>
+        <div class="col-auto text-center">
+          <div style="font-size:20px;font-weight:700;color:#2a7a2a;">
+            🌴 Island<span style="font-weight:400;">Spas</span>
+            <div style="font-size:10px;color:#888;letter-spacing:2px;">BY ARTESIAN</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-3 col-md-6">
+          <h6>Contact Us</h6>
+          <p style="margin-bottom:5px;">yoursitename.com</p>
+          <p style="color:#fff;margin-bottom:5px;">CALL 24/7: 888 - 201 - 8899</p>
+          <p style="margin-bottom:3px;">Your Address: Street</p>
+          <p style="margin-bottom:3px;">State & Zip Code</p>
+          <p style="margin-bottom:10px;">City & Country</p>
+          <p style="margin-bottom:15px;">Email: servicemail@yoursitename.com</p>
+          <div class="social-icons">
+            <a href="#">T</a><a href="#">f</a><a href="#">in</a>
+            <a href="#">g+</a><a href="#">▶</a><a href="#">P</a>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <h6>Information</h6>
+          <a href="about.html">ABOUT US</a>
+          <a href="#">CUSTOMER SERVICE</a>
+          <a href="#">PRIVACY POLICY</a>
+          <a href="#">SITE MAP</a>
+          <a href="#">SEARCH TERMS</a>
+          <a href="contact.html">CONATACT US</a>
+          <a href="about.html">ABOUT US</a>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <h6>My Account</h6>
+          <a href="login.html">SIGN IN</a>
+          <a href="#">VIEW CART</a>
+          <a href="#">MY WISHLIST</a>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <h6>Signup for a News Letter</h6>
+          <p style="margin-bottom:8px;">SIGN UP FOR OUR NEWS LETTER:</p>
+          <input type="email" class="newsletter-input" placeholder="">
+          <div class="payment-icons">
+            <p style="color:#888;margin-bottom:5px;">PAYMENT SOLUTIONS</p>
+            <span>VISA</span><span>MC</span><span>AMEX</span><span>DISC</span><span>PP</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2014 Hottubspaservice.com. All Rights Reserved.</div>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+    $(document).ready(function () {
+
+      /* ===== Animate cart items on load ===== */
+      $('.cart-item').each(function (i) {
+        var el = $(this);
+        setTimeout(function () {
+          el.addClass('visible');
+        }, i * 150);
+      });
+
+      /* ===== Auto-hide alert after 5 seconds ===== */
+      setTimeout(function () {
+        $('#cartAlert').fadeOut(500);
+      }, 5000);
+
+      /* ===== Also Viewed carousel arrows (simple show/hide animation) ===== */
+      $('#nextBtn, #prevBtn').on('click', function () {
+        $('#alsoViewedRow').fadeOut(200, function () {
+          $(this).fadeIn(200);
+        });
+      });
+
+      /* ===== Hover effect on also-viewed items ===== */
+      $('.also-item').on('mouseenter', function () {
+        $(this).find('.also-item-price').css('color', '#a00');
+      }).on('mouseleave', function () {
+        $(this).find('.also-item-price').css('color', '#c00');
+      });
+
+    });
+
+    /* ===== Remove item from cart ===== */
+    function removeItem(itemId) {
+      $('#item-' + itemId).slideUp(400, function () {
+        $(this).remove();
+        updateTotal();
+        var remaining = $('.cart-item').length;
+        $('#itemCount').text(remaining);
+        $('#cartCountDisplay').text(remaining);
+        if (remaining === 0) {
+          $('#cartSummary').hide();
+          $('.cart-actions').hide();
+          $('#emptyCartMsg').fadeIn(400);
+          $('#cartAlert').hide();
+        }
+      });
+    }
+
+    /* ===== Update total on quantity change ===== */
+    function updateTotal() {
+      var total = 0;
+      var itemPrice = 9.00; // base price per item
+      $('.qty-select').each(function () {
+        var qty = parseInt($(this).val()) || 1;
+        total += itemPrice * qty;
+      });
+      $('#cartTotal').text('$' + total.toFixed(2));
+    }
+  </script>
+
+</body>
+</html>
