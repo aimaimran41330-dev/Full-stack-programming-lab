@@ -1,0 +1,182 @@
+:root {
+  /* ---- Sleek dark premium palette ---- */
+  --paper: #0a0b0f;        /* app canvas (darkest) */
+  --surface: #14161f;      /* cards, sidebar, panels */
+  --surface-2: #1e222e;    /* hover / elevated */
+  --surface-3: #272c3a;
+
+  --ink: #eef0f6;          /* primary text */
+  --ink-soft: #9aa1b4;     /* secondary text */
+  --ink-faint: #6b7280;
+
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.14);
+
+  --accent: #6c7cff;       /* indigo-azure */
+  --accent-hover: #8593ff;
+  --accent-soft: rgba(108, 124, 255, 0.14);
+  --accent-glow: rgba(108, 124, 255, 0.45);
+  --gold: #d9b779;         /* champagne micro-accent */
+
+  /* Status */
+  --lead: #f0c46a;     --lead-bg: rgba(240, 196, 106, 0.13);
+  --active: #5fd0a0;   --active-bg: rgba(95, 208, 160, 0.13);
+  --inactive: #99a0b0; --inactive-bg: rgba(153, 160, 176, 0.12);
+  --danger: #ff8c8c;   --danger-bg: rgba(255, 140, 140, 0.12);
+
+  --radius: 11px;
+  --radius-lg: 18px;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 12px 30px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 24px 70px rgba(0, 0, 0, 0.55);
+
+  --font-display: "Bricolage Grotesque", "Hanken Grotesk", sans-serif;
+  --font-body: "Hanken Grotesk", system-ui, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ambient atmosphere — soft glows behind everything */
+body {
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(900px 560px at 8% -8%, rgba(108, 124, 255, 0.13), transparent 60%),
+    radial-gradient(800px 520px at 102% 4%, rgba(95, 208, 160, 0.06), transparent 55%),
+    radial-gradient(700px 700px at 50% 120%, rgba(217, 183, 121, 0.05), transparent 60%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: var(--font-body); cursor: pointer; }
+input, select, textarea { font-family: var(--font-body); }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: linear-gradient(180deg, #818dff 0%, #5b6ef5 100%);
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 6px 22px var(--accent-glow);
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 10px 32px var(--accent-glow);
+}
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+.btn-ghost:hover { background: var(--surface-2); border-color: var(--line-strong); }
+.btn-danger { background: var(--danger-bg); color: var(--danger); border-color: rgba(255, 140, 140, 0.25); }
+.btn-danger:hover { background: rgba(255, 140, 140, 0.18); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn-sm { padding: 6px 13px; font-size: 13px; }
+
+/* ---------- Forms ---------- */
+.field { margin-bottom: 18px; }
+.field label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ink-soft);
+  margin-bottom: 7px;
+}
+.input, .select, .textarea {
+  width: 100%;
+  padding: 11px 14px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 14px;
+  color: var(--ink);
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.input::placeholder, .textarea::placeholder { color: var(--ink-faint); }
+.input:focus, .select:focus, .textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+.select { appearance: none; background-image: linear-gradient(180deg, rgba(255,255,255,0.02), transparent); }
+.select option { background: var(--surface); color: var(--ink); }
+.textarea { resize: vertical; min-height: 84px; }
+
+/* ---------- Cards ---------- */
+.card {
+  background-color: var(--surface);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0) 150px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+/* ---------- Badges ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+.badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
+.badge-Lead { background: var(--lead-bg); color: var(--lead); border-color: rgba(240, 196, 106, 0.22); }
+.badge-Active { background: var(--active-bg); color: var(--active); border-color: rgba(95, 208, 160, 0.22); }
+.badge-Inactive { background: var(--inactive-bg); color: var(--inactive); border-color: rgba(153, 160, 176, 0.2); }
+
+/* ---------- Utilities ---------- */
+.spinner {
+  width: 18px; height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+.spinner-dark { border-color: var(--line-strong); border-top-color: var(--accent); }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: var(--line-strong); background-clip: padding-box; }
+::-webkit-scrollbar-track { background: transparent; }
+
+::selection { background: var(--accent-soft); color: #fff; }
